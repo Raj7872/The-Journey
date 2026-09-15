@@ -1,0 +1,373 @@
+/* Tailwind CSS v4 — single import replaces all v3 @tailwind directives */
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design Tokens — Tailwind v4 CSS-first configuration
+   These replace tailwind.config.ts entirely.
+   Use these as Tailwind utilities: bg-station-void, text-amber-glow, etc.
+   ───────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  /* ── Colors ──────────────────────────────────────────────────────────── */
+
+  /* Backgrounds */
+  --color-station-void: #050608;
+  --color-station-deep: #0a0b0f;
+  --color-station-wall: #0d1117;
+  --color-station-surface: #111520;
+
+  /* Amber / Warmth */
+  --color-amber-glow: #d4843a;
+  --color-amber-dim: #8a5220;
+  --color-amber-trace: #b8922a;
+
+  /* Paper / Cream */
+  --color-paper-cream: #f2e8d5;
+  --color-paper-aged: #f5eed8;
+  --color-paper-warm: #f0e8d0;
+  --color-paper-dim: #c9b99a;
+
+  /* Wood / Station materials */
+  --color-wood-dark: #2a1f14;
+  --color-wood-medium: #3d2d1a;
+  --color-brass: #b8922a;
+
+  /* Ink */
+  --color-ink-dark: #2d1f0e;
+  --color-ink-medium: #3d2810;
+
+  /* Nature (Act V) */
+  --color-field-green: #3d5a47;
+  --color-sunrise-gold: #e8a45a;
+  --color-morning-white: #f5f0e8;
+
+  /* ── Typography ──────────────────────────────────────────────────────── */
+
+  --font-display: 'IM Fell English', Georgia, serif;
+  --font-body: 'Crimson Text', Georgia, serif;
+  --font-mono: 'Special Elite', 'Courier New', monospace;
+
+  /* ── Spacing ─────────────────────────────────────────────────────────── */
+
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+  --spacing-88: 22rem;
+  --spacing-104: 26rem;
+  --spacing-112: 28rem;
+  --spacing-128: 32rem;
+
+  /* ── Easing ──────────────────────────────────────────────────────────── */
+
+  --ease-station: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ── Animation ───────────────────────────────────────────────────────── */
+
+  --animate-lamp-flicker: lamp-flicker 4s ease-in-out infinite;
+  --animate-ambient-float: ambient-float 8s ease-in-out infinite;
+  --animate-notebook-glow: notebook-glow 1.5s ease-in-out;
+  --animate-steam-rise: steam-rise 3s ease-out infinite;
+  --animate-seal-break: seal-break 0.6s ease-in forwards;
+  --animate-polaroid-develop: polaroid-develop 4s ease-out forwards;
+  --animate-board-flip: board-flip 0.15s ease-in-out;
+}
+
+@keyframes lamp-flicker {
+  0%, 100% { opacity: 1; }
+  88% { opacity: 1; }
+  90% { opacity: 0.7; }
+  92% { opacity: 1; }
+  95% { opacity: 0.85; }
+  97% { opacity: 1; }
+}
+
+@keyframes ambient-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes notebook-glow {
+  0%, 100% { box-shadow: 0 0 0px rgba(212,132,58,0); }
+  50% { box-shadow: 0 0 20px rgba(212,132,58,0.4); }
+}
+
+@keyframes steam-rise {
+  0% { transform: translateY(0) scale(1); opacity: 0.4; }
+  100% { transform: translateY(-40px) scale(1.5); opacity: 0; }
+}
+
+@keyframes seal-break {
+  0% { transform: scale(1) rotate(0deg); opacity: 1; }
+  30% { transform: scale(1.1) rotate(-5deg); }
+  100% { transform: scale(0) rotate(15deg); opacity: 0; }
+}
+
+@keyframes polaroid-develop {
+  0% { filter: brightness(0.1) saturate(0); }
+  40% { filter: brightness(0.6) saturate(0.3); }
+  100% { filter: brightness(1) saturate(1); }
+}
+
+@keyframes board-flip {
+  0% { transform: rotateX(0deg); }
+  50% { transform: rotateX(90deg); }
+  100% { transform: rotateX(0deg); }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   CSS Custom Properties
+   Atmosphere values are written here by LightingManager and EmotionDirector.
+   Every component that needs to respond to emotional state reads from these.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Atmosphere — driven by EmotionDirector */
+  --atm-light-warmth: 0.1;
+  --atm-brightness: 0.25;
+  --atm-rain-intensity: 0.85;
+  --atm-fog-density: 0.6;
+  --atm-ambient-color: rgba(10, 11, 20, 1);
+  --atm-light-source: rgba(180, 120, 50, 0.35);
+  --atm-world-filter: brightness(0.65) saturate(0.5);
+  --atm-bloom: 0.1;
+  --atm-dust-density: 0.2;
+  --atm-steam-density: 0.1;
+  --atm-firefly-density: 0;
+  --atm-petal-density: 0;
+
+  /* Lighting — driven by LightingManager */
+  --light-warmth: 0.1;
+  --light-brightness: 0.25;
+  --light-bloom: 0.1;
+  --light-lamp-color: rgb(148, 106, 80);
+  --light-ambient: rgba(10, 11, 20, 1);
+  --light-source: rgba(180, 120, 50, 0.35);
+  --world-filter: brightness(0.65) saturate(0.5);
+
+  /* Typography */
+  --font-display: 'IM Fell English', Georgia, serif;
+  --font-body: 'Crimson Text', Georgia, serif;
+  --font-mono: 'Special Elite', 'Courier New', monospace;
+
+  /* Palette — static design tokens */
+  --color-station-void: #050608;
+  --color-station-deep: #0a0b0f;
+  --color-station-wall: #0d1117;
+  --color-amber-glow: #d4843a;
+  --color-amber-dim: #8a5220;
+  --color-paper-cream: #f2e8d5;
+  --color-paper-aged: #f5eed8;
+  --color-ink-dark: #2d1f0e;
+  --color-brass: #b8922a;
+
+  /* Timing */
+  --transition-default: 1200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-fast: 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-cinematic: 2000ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Reset ────────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--color-station-void);
+  color: var(--color-paper-cream);
+  font-family: var(--font-body);
+  overflow: hidden; /* Experience controls its own scroll */
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* ── Focus Styles — accessible, styled for the experience ─────────────────── */
+
+:focus-visible {
+  outline: 1px solid rgba(212, 132, 58, 0.5);
+  outline-offset: 3px;
+}
+
+/* ── Selection ────────────────────────────────────────────────────────────── */
+
+::selection {
+  background-color: rgba(212, 132, 58, 0.2);
+  color: var(--color-paper-cream);
+}
+
+/* ── Scrollbar — hidden in experience, visible in overlays ───────────────── */
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 132, 58, 0.2);
+  border-radius: 2px;
+}
+
+/* ── Utility Classes ──────────────────────────────────────────────────────── */
+
+/* World container — camera transforms applied here */
+.world-container {
+  position: fixed;
+  inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+  filter: var(--world-filter);
+  transition: filter var(--transition-cinematic);
+}
+
+/* Paper surface — used by letters, postcards, tickets */
+.paper-surface {
+  background-color: var(--color-paper-aged);
+  background-image: url('/images/textures/paper-cream.webp');
+  background-size: 400px;
+  position: relative;
+}
+
+/* Paper noise overlay */
+.paper-surface::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/textures/noise.webp');
+  background-size: 200px;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+/* Station lamp glow — applied to lamp elements */
+.station-lamp {
+  box-shadow:
+    0 0 20px 8px rgba(212, 132, 58, 0.15),
+    0 0 60px 30px rgba(212, 132, 58, 0.06);
+  animation: lamp-flicker 4s ease-in-out infinite;
+}
+
+/* Ink text — handwritten feel */
+.ink-text {
+  font-family: var(--font-display);
+  color: var(--color-ink-dark);
+  line-height: 1.8;
+}
+
+/* Ambient text — barely visible captions */
+.ambient-text {
+  font-family: var(--font-body);
+  font-style: italic;
+  color: rgba(242, 232, 213, 0.35);
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+/* Mono label — ticket numbers, dates, labels */
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(184, 146, 42, 0.6);
+}
+
+/* ── Reduced Motion ───────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Font Face Declarations ───────────────────────────────────────────────── */
+
+@font-face {
+  font-family: 'IM Fell English';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/IMFellEnglish-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IM Fell English';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/IMFellEnglish-Italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Crimson Text';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/CrimsonText-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Crimson Text';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/CrimsonText-Italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Crimson Text';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/CrimsonText-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Special Elite';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/SpecialElite-Regular.woff2') format('woff2');
+}
+
+/* ── TimelineDirector CSS Variables ──────────────────────────────────────── */
+/* Written by TimelineContext on every state change.                          */
+/* All atmosphere components read from here — never from JS props.            */
+
+:root {
+  /* Weather — written by TimelineContext */
+  --weather-rain: 0.85;
+  --weather-fog: 0.6;
+  --weather-wind: 0.3;
+  --weather-rain-drops: 255;
+
+  /* Particles — written by TimelineContext */
+  --particle-dust: 0.15;
+  --particle-steam: 0.1;
+  --particle-firefly: 0;
+  --particle-petal: 0;
+
+  /* Timeline progress */
+  --timeline-progress: 0;
+
+  /* Clock */
+  --clock-minute: 58;
+}

@@ -1,0 +1,77 @@
+import type { TicketMemory } from '@/types/memory'
+
+export const TICKETS: TicketMemory[] = [
+  {
+    id: 'ticket-001',
+    category: 'ticket',
+    title: 'First Conversation',
+    location: {
+      scene: 'entrance-hall',
+      description: 'Sticking out of the vintage ticket machine',
+      visualHint: { x: 30, y: 55 },
+    },
+    animation: { type: 'slide', duration: 500, reversible: true },
+    audio: { sfx: 'ticket-stamp' },
+    unlockCondition: { type: 'free' },
+    notebookSection: 3,
+    notebookOrder: 1,
+    from: 'Strangers',
+    to: 'First Conversation',
+    date: '3 Years Ago',
+    passenger: 'Two people',
+    platform: '01',
+    noteOnBack: 'The journey begins here.',
+    ticketNumber: 'No. 0001',
+    ticketClass: 'FIRST',
+  },
+  {
+    id: 'ticket-002',
+    category: 'ticket',
+    title: 'Three Stops',
+    location: {
+      scene: 'platform-one',
+      description: 'On the floor near the track edge',
+      visualHint: { x: 45, y: 85 },
+    },
+    animation: { type: 'slide', duration: 500, reversible: true },
+    audio: { sfx: 'ticket-stamp' },
+    unlockCondition: { type: 'free' },
+    notebookSection: 3,
+    notebookOrder: 2,
+    from: 'Strangers',
+    to: 'Friends',
+    date: '4 Months ago',
+    passenger: 'Two strangers',
+    platform: '04',
+    noteOnBack: 'Met an Angel, So Beautiful and Elegant.',
+    ticketNumber: 'No. 0002',
+    ticketClass: 'SECOND',
+  },
+  {
+    // A bonus, not a step on the journey — hidden with no hint, findable
+    // only after she's said yes and the world has finished changing. Where
+    // the-gift's ticket was a question, this one is an answer already
+    // living in the future tense.
+    id: 'ticket-003',
+    category: 'ticket',
+    title: 'One More Ticket',
+    location: {
+      scene: 'world-changes',
+      description: 'Half-hidden in the flowers that just bloomed — no hint given, just there to find',
+      visualHint: { x: 24, y: 88 },
+    },
+    animation: { type: 'slide', duration: 500, reversible: false },
+    audio: { sfx: 'ticket-stamp' },
+    unlockCondition: { type: 'act-reached', actId: 'ending' },
+    notebookSection: 3,
+    notebookOrder: 3,
+    from: 'Right Now',
+    to: 'Wherever We\'re Going',
+    date: 'Every day after tonight',
+    passenger: 'Both of Us',
+    platform: '11',
+    noteOnBack: 'There will be no final stop for this Journey. Until, Death calls me.',
+    ticketNumber: 'No. 0004',
+    ticketClass: 'FIRST',
+  },
+]
