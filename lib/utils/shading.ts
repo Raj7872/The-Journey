@@ -21,7 +21,7 @@ export function groundShadow(width: number, opacity = 0.35): CSSProperties {
     width,
     height: Math.round(width * 0.26),
     borderRadius: '50%',
-    background: `radial-gradient(ellipse, rgba(0,0,0,${opacity}) 0%, transparent 72%)`,
+    background: `radial-gradient(ellipse 42% 25% at 50% 42%, rgba(0,0,0,${Math.min(opacity * 1.5, 0.85)}) 0%, transparent 100%), radial-gradient(ellipse at 55% 50%, rgba(0,0,0,${opacity}) 0%, transparent 72%)`,
     pointerEvents: 'none',
   }
 }
@@ -33,7 +33,7 @@ export function groundShadow(width: number, opacity = 0.35): CSSProperties {
 export function faceGradient(r: number, g: number, b: number, alpha = 0.9, lightAmount = 18): string {
   const hi = (n: number) => Math.min(n + lightAmount, 255)
   const lo = (n: number) => Math.max(n - lightAmount, 0)
-  return `linear-gradient(180deg, rgba(${hi(r)},${hi(g)},${hi(b)},${alpha}) 0%, rgba(${r},${g},${b},${alpha}) 45%, rgba(${lo(r)},${lo(g)},${lo(b)},${alpha}) 100%)`
+  return `linear-gradient(100deg, rgba(255,228,186,0.06), transparent 32%, rgba(0,0,0,0.16)), linear-gradient(180deg, rgba(${hi(r)},${hi(g)},${hi(b)},${alpha}) 0%, rgba(${r},${g},${b},${alpha}) 12%, rgba(${r},${g},${b},${alpha}) 65%, rgba(${lo(r)},${lo(g)},${lo(b)},${alpha}) 100%)`
 }
 
 /**

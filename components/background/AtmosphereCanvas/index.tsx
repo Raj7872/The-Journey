@@ -1,7 +1,8 @@
 'use client'
 
 import { Canvas } from '@react-three/fiber'
-import { Preload } from '@react-three/drei'
+import { useEffect, useState } from 'react'
+import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 import { WebGLErrorBoundary } from '@/engine/ErrorBoundaries/WebGLErrorBoundary'
 import { RainSystem } from '../RainSystem'
@@ -19,6 +20,14 @@ import { ParticleSystem } from '../ParticleSystem'
  * Axes: X right, Y up, Z toward viewer. Scene width ~30 units = screen width.
  */
 export function AtmosphereCanvas() {
+  const [visible, setVisible] = useState(true)
+  const reducedMotion = useReducedMotion()
+  useEffect(() => {
+    const update = () => setVisible(!document.hidden)
+    update()
+    document.addEventListener('visibilitychange', update)
+    return () => document.removeEventListener('visibilitychange', update)
+  }, [])
   return (
     <WebGLErrorBoundary>
       <div
@@ -45,13 +54,12 @@ export function AtmosphereCanvas() {
             depth: false,
           }}
           style={{ background: 'transparent' }}
-          frameloop="always"
-          dpr={[1, 1.5]}            // Cap at 1.5 — atmosphere doesn't need retina
+          frameloop={visible && !reducedMotion ? 'always' : 'demand'}
+          dpr={1}                  // Soft atmosphere needs no retina render target.
         >
           <RainSystem />
           <FogSystem />
           <ParticleSystem />
-          <Preload all />
         </Canvas>
       </div>
     </WebGLErrorBoundary>

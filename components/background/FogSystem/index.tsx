@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -24,6 +24,7 @@ function rgbToThreeColor(rgba: string): THREE.Color {
  */
 export function FogSystem() {
   const { timeline } = useTimeline()
+  const fogColor = useMemo(() => rgbToThreeColor(timeline.lightingProfile.ambientColor), [timeline.lightingProfile.ambientColor])
 
   const material = useMemo(
     () =>
@@ -63,9 +64,11 @@ export function FogSystem() {
     []
   )
 
+  useEffect(() => () => material.dispose(), [material])
+
   useFrame(() => {
     const { fogDensity } = timeline.weatherState
-    const { warmth, ambientColor } = timeline.lightingProfile
+    const { warmth } = timeline.lightingProfile
 
     const densityUniform = material.uniforms['uDensity']
     const warmthUniform = material.uniforms['uWarmth']
@@ -73,7 +76,7 @@ export function FogSystem() {
 
     if (densityUniform) densityUniform.value = fogDensity
     if (warmthUniform) warmthUniform.value = warmth
-    if (colorUniform) colorUniform.value = rgbToThreeColor(ambientColor)
+    if (colorUniform) colorUniform.value.copy(fogColor)
   })
 
   if (timeline.weatherState.fogDensity < 0.02) return null

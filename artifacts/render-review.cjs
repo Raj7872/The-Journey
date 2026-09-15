@@ -1,0 +1,7 @@
+﻿const fs=require('node:fs'), ts=require('typescript'), React=require('react'), {renderToStaticMarkup}=require('react-dom/server');
+function load(file,mocks={}){const mod={exports:{}};new Function('require','module','exports',ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX,target:ts.ScriptTarget.ES2022}}).outputText)(key=>mocks[key]||require(key),mod,mod.exports);return mod.exports;}
+const {ArrivalCarriage}=load('components/train/ArrivalCarriage/index.tsx',{'@/components/station/StationObject':{StationObject:({children,style})=>React.createElement('div',{style},children)},'@/components/common/SteamWisp':{SteamWisp:()=>null},'@/lib/constants/timing':{TIMING:{TRAIN_ARRIVAL_STOP:45000,TRAIN_ARRIVAL_VISIBLE:25000}}});
+const {SceneDepth}=load('components/world/SceneDepth/index.tsx');
+const {PerspectiveFloor}=load('components/common/PerspectiveFloor/index.tsx');
+const html=renderToStaticMarkup(React.createElement('div',{style:{width:1440,height:900,position:'relative',overflow:'hidden',background:'linear-gradient(#0b101c,#252a2d)'}},React.createElement(PerspectiveFloor,{height:'28%',colorNear:'#302a22',colorFar:'#151b22',lineColor:'#737b7330'}),React.createElement(ArrivalCarriage,{doorsOpen:true,stopped:true,conductorReady:true,reducedMotion:true,paused:false,onBoard:()=>{}}),React.createElement(SceneDepth,{sceneId:'train-arrival'})));
+fs.writeFileSync('artifacts/train-review.html','<!doctype html><html><body style="margin:0">'+html+'</body></html>');

@@ -9,10 +9,9 @@ import { useDebug } from '@/engine/DebugManager/DebugContext'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { AmbientLight } from '@/components/station/AmbientLight'
 import { WorldObject } from '@/components/world/WorldObject'
-import { StationObject } from '@/components/station/StationObject'
 import { PerspectiveFloor } from '@/components/common/PerspectiveFloor'
-import { SteamWisp } from '@/components/common/SteamWisp'
 import { groundShadow, faceGradient } from '@/lib/utils/shading'
+import { ArrivalCarriage } from '@/components/train/ArrivalCarriage'
 import { TIMING } from '@/lib/constants/timing'
 
 /**
@@ -45,7 +44,6 @@ function TrainArrivalSequence() {
 
   const [whistlePlayed, setWhistlePlayed] = useState(false)
   const [trainVisible, setTrainVisible] = useState(false)
-  const [trainAlongside, setTrainAlongside] = useState(false)
   const [trainStopped, setTrainStopped] = useState(false)
   const [doorsOpen, setDoorsOpen] = useState(false)
   const [conductorReady, setConductorReady] = useState(false)
@@ -54,12 +52,8 @@ function TrainArrivalSequence() {
   useEffect(() => {
     const timers = [
       setTimeout(() => { playSfx('train-whistle'); setWhistlePlayed(true) }, TIMING.TRAIN_ARRIVAL_WHISTLE),
-      // A front-on locomotive grows first (continuing the head-on approach
-      // the light/rails already set up)...
+      // One carriage follows the approach from the distant light to the platform.
       setTimeout(() => setTrainVisible(true), TIMING.TRAIN_ARRIVAL_VISIBLE),
-      // ...then it swings/crossfades into the side view now sitting
-      // alongside the platform, rather than the side view just popping in.
-      setTimeout(() => setTrainAlongside(true), TIMING.TRAIN_ARRIVAL_SWING),
       setTimeout(() => { playSfx('train-brake'); setTrainStopped(true) }, TIMING.TRAIN_ARRIVAL_STOP),
       setTimeout(() => { playSfx('train-door'); setDoorsOpen(true) }, TIMING.TRAIN_ARRIVAL_DOOR),
       setTimeout(() => setConductorReady(true), TIMING.TRAIN_ARRIVAL_NOD),
@@ -212,32 +206,15 @@ function TrainArrivalSequence() {
         </div>
       </WorldObject>
 
-      {/* Rails converging toward the vanishing point — glint grows as the light approaches */}
-      <div style={{ position: 'absolute', bottom: '28%', left: '50%', transform: 'translateX(-50%)', width: '90%', height: '22%', overflow: 'hidden' }} aria-hidden="true">
-        {[-1, 1].map((side) => (
-          <div key={side} style={{
-            position: 'absolute', bottom: 0, left: '50%',
-            width: 2, height: '100%',
-            transformOrigin: 'bottom center',
-            transform: `translateX(${side * 1}px) rotate(${side * 3.5}deg)`,
-            background: 'linear-gradient(0deg, rgba(90,90,100,0.5) 0%, rgba(60,60,70,0.25) 100%)',
-          }}>
-            <div style={{
-              position: 'absolute', inset: 0,
-              background: 'linear-gradient(0deg, rgba(230,190,130,0.9) 0%, transparent 60%)',
-              animation: !reducedMotion
-                ? `rail-glint-grow ${TIMING.TRAIN_ARRIVAL_VISIBLE - TIMING.TRAIN_ARRIVAL_RAILS}ms ease-in ${TIMING.TRAIN_ARRIVAL_RAILS}ms backwards ${playState}`
-                : 'none',
-              opacity: reducedMotion ? 0.6 : undefined,
-            }} />
-          </div>
-        ))}
-      </div>
+      <svg aria-hidden="true" viewBox="0 0 1440 900" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
+        <path d="M980 520L-180 730 M980 524L1510 730" stroke="#7d8585" strokeOpacity="0.4" strokeWidth="2" fill="none" />
+        <path d="M980 520L-180 730 M980 524L1510 730" stroke="#edc58c" strokeOpacity={whistlePlayed ? 0.28 : 0.04} style={{ transition: 'stroke-opacity 8s ease' }} fill="none" />
+      </svg>
 
       {/* The distant light — a pinprick that grows into a headlamp */}
       {!trainVisible && (
         <div style={{
-          position: 'absolute', bottom: '30%', left: '50%',
+          position: 'absolute', bottom: '42%', left: '68%',
           width: 6, height: 6,
           borderRadius: '50%',
           background: 'rgba(255,225,180,1)',
@@ -249,193 +226,15 @@ function TrainArrivalSequence() {
         }} aria-hidden="true" />
       )}
 
-      {/* The train coming straight at the platform — a face-on locomotive
-          that grows in place, picking up right where the distant light left
-          off. It fades out as the side view crossfades in below, so the
-          train reads as swinging around to pull up alongside you rather
-          than teleporting from a head-on light into a side profile. */}
       {trainVisible && (
-        <div style={{
-          position: 'absolute', bottom: '28%', left: '50%',
-          transform: 'translateX(-50%)',
-          opacity: trainAlongside ? 0 : 1,
-          transition: 'opacity 0.9s ease',
-          animation: !reducedMotion
-            ? `train-front-grow ${TIMING.TRAIN_ARRIVAL_SWING - TIMING.TRAIN_ARRIVAL_VISIBLE}ms ease-out ${playState}`
-            : 'none',
-        }} aria-hidden="true">
-          <div style={{ position: 'relative', width: 110, height: 96 }}>
-            {/* Smokestack + steam, rising above the face */}
-            <div style={{
-              position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)',
-              width: 7, height: 16,
-              background: `rgba(${16+Math.round(w*4)},${13+Math.round(w*3)},${10+Math.round(w*2)},0.95)`,
-            }} />
-            <div style={{ position: 'absolute', top: -30, left: '50%', transform: 'translateX(-50%)' }}>
-              <SteamWisp width={14} height={22} opacity={0.3} />
-            </div>
-            {/* Locomotive face */}
-            <div style={{
-              position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)',
-              width: 90, height: 80,
-              background: `linear-gradient(180deg, rgba(${28+Math.round(w*8)},${22+Math.round(w*5)},${16+Math.round(w*3)},0.98) 0%, rgba(14,11,8,0.98) 100%)`,
-              borderRadius: '20px 20px 6px 6px',
-              border: `1px solid rgba(210,155,72,${0.25 + b * 0.2})`,
-            }} />
-            {/* Two cab windows flanking the headlamp */}
-            <div style={{ position: 'absolute', bottom: 50, left: 12, width: 16, height: 16, background: `rgba(230,175,95,${0.5 + b * 0.3})`, boxShadow: `0 0 10px 2px rgba(212,150,70,${0.3 + b * 0.2})` }} />
-            <div style={{ position: 'absolute', bottom: 50, right: 12, width: 16, height: 16, background: `rgba(230,175,95,${0.5 + b * 0.3})`, boxShadow: `0 0 10px 2px rgba(212,150,70,${0.3 + b * 0.2})` }} />
-            {/* Big centered headlamp */}
-            <div style={{
-              position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)',
-              width: 24, height: 24, borderRadius: '50%',
-              background: 'rgba(255,235,190,0.95)',
-              boxShadow: '0 0 55px 20px rgba(255,220,160,0.6)',
-            }} />
-          </div>
-        </div>
-      )}
-
-      {/* The side view — swings in alongside the platform, slows the rest
-          of the way, stops, steams, opens its door. */}
-      {trainAlongside && (
-        <div style={{
-          position: 'absolute', bottom: '26%', left: '50%',
-          transform: 'translateX(-50%)',
-          animation: !reducedMotion
-            ? `train-alongside-appear ${Math.max(TIMING.TRAIN_ARRIVAL_STOP - TIMING.TRAIN_ARRIVAL_SWING, 1)}ms cubic-bezier(0.25,0.7,0.3,1) forwards ${playState}`
-            : 'none',
-        }} aria-hidden="true">
-          <div style={{ position: 'relative', width: 420, height: 130 }}>
-            {/* Locomotive body */}
-            <div style={{
-              position: 'absolute', bottom: 0, left: 0, width: 420, height: 90,
-              background: `linear-gradient(180deg, rgba(${28+Math.round(w*8)},${22+Math.round(w*5)},${16+Math.round(w*3)},0.98) 0%, rgba(14,11,8,0.98) 100%)`,
-              borderTop: `1px solid rgba(210,155,72,${0.25 + b * 0.2})`,
-              borderRadius: '4px 18px 0 0',
-            }} />
-            {/* Lit carriage windows — warm, welcoming */}
-            <div style={{ position: 'absolute', bottom: 30, left: 24, display: 'flex', gap: 14 }}>
-              {[0, 1, 2, 3, 4].map((i) => (
-                <div key={i} style={{
-                  width: 34, height: 40,
-                  background: `rgba(230,175,95,${0.5 + b * 0.3})`,
-                  boxShadow: `0 0 18px 4px rgba(212,150,70,${0.3 + b * 0.2})`,
-                  border: `1px solid rgba(20,15,10,0.6)`,
-                }} />
-              ))}
-            </div>
-            {/* Brass nameplate */}
-            <div style={{
-              position: 'absolute', top: 8, left: 24,
-              padding: '2px 6px',
-              background: 'linear-gradient(180deg, rgba(215,175,85,0.85), rgba(145,112,42,0.85))',
-              border: '1px solid rgba(90,68,24,0.5)',
-              borderRadius: 1,
-            }}>
-              <span style={{
-                fontFamily: 'var(--font-mono,"Special Elite",monospace)',
-                fontSize: 7, letterSpacing: '1.5px',
-                color: 'rgba(30,22,10,0.85)',
-              }}>
-                WORTH THE WAIT
-              </span>
-            </div>
-            {/* Front headlamp */}
-            <div style={{
-              position: 'absolute', bottom: 40, right: -6,
-              width: 16, height: 16, borderRadius: '50%',
-              background: 'rgba(255,235,190,0.95)',
-              boxShadow: '0 0 40px 14px rgba(255,220,160,0.55)',
-            }} />
-            {/* Door — closed until TRAIN_ARRIVAL_DOOR, then swings open */}
-            <div style={{
-              position: 'absolute', bottom: 0, left: 200,
-              width: 30, height: 70,
-              background: `rgba(${18+Math.round(w*4)},${14+Math.round(w*3)},${10+Math.round(w*2)},0.95)`,
-              borderTop: `1px solid rgba(210,155,72,${0.3 + b * 0.2})`,
-              transformOrigin: 'left center',
-              transform: doorsOpen ? 'rotateY(75deg)' : 'rotateY(0deg)',
-              transition: 'transform 1.4s ease-out',
-            }}>
-              {doorsOpen && (
-                <div style={{
-                  position: 'absolute', inset: 0,
-                  background: `rgba(230,175,95,${0.4 + b * 0.3})`,
-                }} />
-              )}
-            </div>
-            {/* Warm light spilling from the open doorway onto the platform */}
-            {doorsOpen && (
-              <div style={{
-                position: 'absolute', bottom: -6, left: 190, width: 60, height: 40,
-                background: `radial-gradient(ellipse, rgba(230,175,95,${0.25 + b * 0.15}) 0%, transparent 75%)`,
-                filter: 'blur(3px)',
-              }} />
-            )}
-            {/* A small handwritten placard, hung near the top of the door — kept
-                well clear of the conductor standing at the base of it */}
-            {doorsOpen && (
-              <div style={{
-                position: 'absolute', bottom: 58, left: 196,
-                transform: 'rotate(-3deg)',
-                background: 'rgba(242,232,213,0.88)',
-                padding: '3px 6px',
-                boxShadow: '0 2px 6px rgba(0,0,0,0.35)',
-                animation: 'hint-fade-in 1.5s ease 0.5s both',
-              }}>
-                <span style={{
-                  fontFamily: 'var(--font-body,"Crimson Text",Georgia,serif)',
-                  fontStyle: 'italic', fontSize: 8,
-                  color: 'rgba(45,31,14,0.85)',
-                  whiteSpace: 'nowrap',
-                }}>
-                  Take your time.
-                </span>
-              </div>
-            )}
-            {/* Steam — a burst as it stops, settling into gentle continuous wisps */}
-            {trainStopped && (
-              <div style={{ position: 'absolute', bottom: -4, left: 60, display: 'flex', gap: 10 }}>
-                <SteamWisp width={26} height={44} opacity={0.5} />
-                <SteamWisp width={20} height={36} opacity={0.4} />
-                <SteamWisp width={30} height={50} opacity={0.45} />
-              </div>
-            )}
-            {/* Conductor — a small silhouette by the door, a lantern raised once, then a slow idle sway */}
-            {conductorReady && (
-              <div style={{
-                position: 'absolute', bottom: 0, left: 240,
-                animation: !reducedMotion ? 'conductor-nod 1.6s ease-out, conductor-idle 4.5s ease-in-out 1.6s infinite' : 'none',
-                transformOrigin: 'bottom center',
-              }}>
-                <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'rgba(20,16,12,0.9)', margin: '0 auto' }} />
-                <div style={{ width: 12, height: 22, background: 'rgba(20,16,12,0.9)', borderRadius: '2px 2px 0 0' }} />
-                <div style={{
-                  position: 'absolute', top: 14, right: -6,
-                  width: 5, height: 5, borderRadius: '50%',
-                  background: 'rgba(230,175,95,0.9)',
-                  boxShadow: '0 0 10px 4px rgba(230,175,95,0.5)',
-                }} />
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Board — only interactive once the door has actually opened. Never forced. */}
-      {doorsOpen && (
-        <StationObject
-          label="Board the train"
-          hint="Board"
-          onClick={handleBoard}
-          style={{
-            position: 'absolute', bottom: '30%', left: '58%',
-            width: 40, height: 60,
-          }}
-        >
-          <div style={{ width: '100%', height: '100%' }} />
-        </StationObject>
+        <ArrivalCarriage
+          doorsOpen={doorsOpen}
+          stopped={trainStopped}
+          conductorReady={conductorReady}
+          reducedMotion={reducedMotion}
+          paused={paused}
+          onBoard={handleBoard}
+        />
       )}
 
       {doorsOpen && (
@@ -459,15 +258,6 @@ function TrainArrivalSequence() {
         @keyframes rail-glint-grow {
           0% { opacity: 0; }
           100% { opacity: 0.85; }
-        }
-        @keyframes train-front-grow {
-          0% { transform: translateX(-50%) scale(0.35); }
-          100% { transform: translateX(-50%) scale(1); }
-        }
-        @keyframes train-alongside-appear {
-          0% { opacity: 0; transform: translateX(-50%) scale(0.9); }
-          30% { opacity: 1; transform: translateX(-50%) scale(1.01); }
-          100% { opacity: 1; transform: translateX(-50%) scale(1); }
         }
         @keyframes train-vibration {
           0%, 100% { transform: translate(0, 0); }

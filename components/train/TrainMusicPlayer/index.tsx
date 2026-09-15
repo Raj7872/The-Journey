@@ -18,6 +18,7 @@ type HowlInstance = {
 type HowlConstructor = new (options: {
   src: string[]
   volume?: number
+  html5?: boolean
   onend?: () => void
   onloaderror?: (id: number, err: unknown) => void
 }) => HowlInstance
@@ -89,6 +90,7 @@ export function TrainMusicPlayer({ style }: TrainMusicPlayerProps) {
 
     const sound = new Howl({
       src: [track.src],
+      html5: true, // Stream full songs instead of decoding entire tracks into memory.
       volume: 0.55,
       onend: () => goTo((trackIndex + 1) % TRAIN_PLAYLIST.length, true),
       onloaderror: () => setLoadError(true),

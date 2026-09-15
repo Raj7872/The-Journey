@@ -5,6 +5,8 @@ node_modules/
 
 # Next.js
 .next/
+.next-review/
+artifacts/chrome-review/
 out/
 
 # Production build

@@ -3,7 +3,7 @@
 // Seam positions as % from the bottom (near) edge — spaced closer together
 // toward the top (far) edge, the classic hand-drawn illustration trick for
 // suggesting a floor receding into the distance without literal 3D rotation.
-const SEAM_POSITIONS = [5, 12, 21, 32, 45, 60, 77, 95]
+const SEAM_POSITIONS = [8, 30, 48, 62, 73, 82, 89, 94, 97]
 
 interface PerspectiveFloorProps {
   /** Height of the visible floor band, e.g. '30%' */
@@ -50,6 +50,12 @@ export function PerspectiveFloor({
       aria-hidden="true"
     >
       <div style={{ position: 'absolute', inset: 0, background: colorNear }} />
+      <svg viewBox="0 0 1000 400" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+        {[-1200, -700, -300, 0, 250, 500, 750, 1000, 1300, 1700, 2200].map(x => (
+          <path key={x} d={`M 500 -35 L ${x} 400`} stroke={lineColor} strokeWidth="1" opacity="0.5" />
+        ))}
+      </svg>
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 5%, rgba(230,183,113,0.11), transparent 65%), linear-gradient(90deg, rgba(0,0,0,0.25), transparent 30%, transparent 70%, rgba(0,0,0,0.25))' }} />
 
       {/* Seams — denser toward the top, suggesting distance */}
       {SEAM_POSITIONS.map((pct, i) => (

@@ -1,6 +1,8 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+  // Allow verification builds without touching a running development server.
+  distDir: process.env['NEXT_BUILD_DIR'] || '.next',
   // Static export for Cloudflare Pages
   output: 'export',
 

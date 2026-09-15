@@ -73,13 +73,16 @@ export function AmbientLight({
           clobbered by this one. */}
       <div
         style={{
+          position: 'relative',
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'column-reverse',
           alignItems: 'center',
           transformOrigin: 'top center',
           animation: swaying && !reducedMotion ? 'lamp-sway 2.4s ease-in-out' : 'none',
         }}
       >
+        <div style={{ position: 'absolute', bottom: s.dot * 0.6, width: s.dot * 3.4, height: s.dot * 1.2, borderRadius: '55% 55% 12% 12%', background: 'linear-gradient(110deg, #687068, #28352f 35%, #111b1c 85%)', borderBottom: `2px solid rgba(${r},${g},${b},0.6)`, boxShadow: 'inset 0 1px 0 #c0b89455', zIndex: 1 }} />
+        <div style={{ position: 'absolute', top: s.stem, width: s.glow * 6, height: s.glow * 6, background: `radial-gradient(ellipse at 50% 0%, rgba(${r},${g},${b},${brightness * 0.1}), transparent 70%)`, pointerEvents: 'none' }} />
         {/* Lamp glow orb */}
         <div
           style={{

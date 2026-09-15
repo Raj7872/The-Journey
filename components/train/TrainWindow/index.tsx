@@ -16,7 +16,7 @@ interface TrainWindowProps {
 /**
  * Imperative wipe controls, driven from outside the component. The window
  * sits several `translateZ`/`preserve-3d` levels deep for the depth
- * illusion — the same nesting that broke click hit-testing for the
+ * illusion â€” the same nesting that broke click hit-testing for the
  * compartment's collectibles also breaks native pointer events on this
  * canvas. The caller measures the window's real on-screen box and forwards
  * pointer events from a flat, non-3D overlay positioned on top of it.
@@ -31,7 +31,7 @@ export interface TrainWindowHandle {
 // rendered twice back-to-back so the loop point is seamless. Segment widths
 // and durations are deliberately not simple multiples of one another, so
 // mountains/forest/near-field rarely line back up the same way twice in a
-// normal viewing session — the closest thing to "no obvious loop" without a
+// normal viewing session â€” the closest thing to "no obvious loop" without a
 // procedural generator.
 const MOUNTAIN_PEAKS = [
   { x: 40, h: 60 }, { x: 160, h: 90 }, { x: 300, h: 50 }, { x: 420, h: 75 },
@@ -45,7 +45,7 @@ const FOREST_TREES = [
   560, 610, 650, 700, 760, 800,
 ]
 const FOREST_SEGMENT = 860
-// Village cluster + river appear once per forest segment — landmarks, not wallpaper
+// Village cluster + river appear once per forest segment â€” landmarks, not wallpaper
 const VILLAGE_X = 560
 const RIVER_X = 220
 
@@ -70,16 +70,16 @@ function useScenery(segmentWidth: number, durationS: number, speedMultiplier: nu
  * A framed compartment window: layered parallax scenery (mountains, forest,
  * a village + river that pass once per cycle, near-field telephone poles)
  * under a drifting mist, plus a fogged-glass canvas the player can wipe
- * clear with the pointer. No prompt ever indicates the wipe is possible —
+ * clear with the pointer. No prompt ever indicates the wipe is possible â€”
  * two small drawings sit beneath the fog, visible only where it's cleared,
  * and slowly re-fog over time like real condensation.
  *
  * A long (5 minute), one-shot CSS animation quietly carries the sky from
- * night toward dawn the longer the player stays — pure decoration local to
+ * night toward dawn the longer the player stays â€” pure decoration local to
  * this component, not tied to game state, so it never touches pacing.
  *
- * Occasionally — every 45–90s, on its own unpredictable schedule — the
- * scenery dips into a 2–3s tunnel: the outside goes dark and the glass's
+ * Occasionally â€” every 45â€“90s, on its own unpredictable schedule â€” the
+ * scenery dips into a 2â€“3s tunnel: the outside goes dark and the glass's
  * own reflection of the lamp becomes the dominant thing on the pane. Purely
  * atmospheric, gated behind the same pause/reduced-motion checks as the
  * rest of the window's motion.
@@ -106,7 +106,7 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
   const forest = useScenery(FOREST_SEGMENT, 52, speed, paused, reducedMotion)
   const near = useScenery(POLE_SEGMENT, 17, speed, paused, reducedMotion)
 
-  // ── Tunnels ─────────────────────────────────────────────────────────────
+  // â”€â”€ Tunnels â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   useEffect(() => {
     if (reducedMotion || paused) return
     let enterTimer: ReturnType<typeof setTimeout>
@@ -124,11 +124,11 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
     return () => { clearTimeout(enterTimer); clearTimeout(exitTimer) }
   }, [reducedMotion, paused])
 
-  // ── Condensation canvas ────────────────────────────────────────────────
+  // â”€â”€ Condensation canvas â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
-    const dpr = window.devicePixelRatio || 1
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
     canvas.width = width * dpr
     canvas.height = height * dpr
     canvas.style.width = `${width}px`
@@ -159,7 +159,7 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
       }
     }
 
-    // Kept deliberately hazy rather than opaque — the outside scenery should
+    // Kept deliberately hazy rather than opaque â€” the outside scenery should
     // stay dimly visible through the condensation, not disappear behind it,
     // and a wipe should feel like clearing a haze rather than uncovering a
     // wall. `source-over` painting is cumulative, so the periodic re-fog is
@@ -184,7 +184,7 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
     if (!canvas || !ctx) return
     const rect = canvas.getBoundingClientRect()
     // The canvas's own drawing coordinate space is fixed at `width`x`height`
-    // regardless of size on screen — a `transform: scale()` on an ancestor
+    // regardless of size on screen â€” a `transform: scale()` on an ancestor
     // (ScaledStage) changes what getBoundingClientRect() reports without
     // changing that internal space, so the raw client-to-rect offset needs
     // rescaling back into canvas coordinates rather than used as-is.
@@ -209,7 +209,7 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
 
   return (
     <div style={{ position: 'relative', width, height, pointerEvents: 'auto', ...style }}>
-      {/* ── Glass + scenery ── */}
+      {/* â”€â”€ Glass + scenery â”€â”€ */}
       <div style={{
         position: 'absolute', inset: 6,
         overflow: 'hidden',
@@ -217,7 +217,7 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
           rgba(${Math.round(8+w*6)},${Math.round(10+w*5)},${Math.round(20-w*3)},1) 0%,
           rgba(${Math.round(5+w*4)},${Math.round(6+w*3)},${Math.round(12-w*2)},1) 100%)`,
       }}>
-        {/* Stars — fade out as dawn approaches */}
+        {/* Stars â€” fade out as dawn approaches */}
         <div style={{ animation: !reducedMotion ? 'train-window-stars-fade 300s linear forwards' : 'none' }}>
           {[12, 30, 55, 72, 88].map((x, i) => (
             <div key={x} style={{
@@ -228,7 +228,7 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
           ))}
         </div>
 
-        {/* Dawn slowly rising — a one-shot 5-minute fade the longer the
+        {/* Dawn slowly rising â€” a one-shot 5-minute fade the longer the
             player lingers here, quietly carrying the sky from night toward
             first light without ever looping or resetting */}
         {!reducedMotion && (
@@ -243,7 +243,7 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
           }} />
         )}
 
-        {/* Mountains — furthest, slowest */}
+        {/* Mountains â€” furthest, slowest */}
         <div style={{ position: 'absolute', bottom: '30%', left: 0, height: '45%', display: 'flex', ...mountains.style, width: mountains.width }}>
           {[0, 1].map((copy) => (
             <svg key={copy} width={MOUNTAIN_SEGMENT} height="100%" viewBox={`0 0 ${MOUNTAIN_SEGMENT} 100`} preserveAspectRatio="none">
@@ -268,7 +268,7 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
                   borderBottom: `${22 + (i % 4) * 6}px solid rgba(${10+Math.round(w*4)},${16+Math.round(w*3)},${10+Math.round(w*2)},0.8)`,
                 }} />
               ))}
-              {/* Village — a small cluster of lit windows, once per segment */}
+              {/* Village â€” a small cluster of lit windows, once per segment */}
               <div style={{ position: 'absolute', bottom: 2, left: VILLAGE_X, display: 'flex', gap: 6 }}>
                 {[0, 1, 2].map((i) => (
                   <div key={i} style={{
@@ -278,7 +278,7 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
                   }} />
                 ))}
               </div>
-              {/* River + bridge — a pale reflective band with two piers, once per segment */}
+              {/* River + bridge â€” a pale reflective band with two piers, once per segment */}
               <div style={{
                 position: 'absolute', bottom: 0, left: RIVER_X, width: 60, height: '100%',
                 background: `linear-gradient(90deg, transparent, rgba(150,180,210,${0.12 + b * 0.1}), transparent)`,
@@ -290,7 +290,7 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
           ))}
         </div>
 
-        {/* Telephone poles — nearest, fastest */}
+        {/* Telephone poles â€” nearest, fastest */}
         <div style={{ position: 'absolute', bottom: '27%', left: 0, height: '20%', display: 'flex', ...near.style, width: near.width }}>
           {[0, 1].map((copy) => (
             <div key={copy} style={{ position: 'relative', width: POLE_SEGMENT, height: '100%', flexShrink: 0 }}>
@@ -304,9 +304,9 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
           ))}
         </div>
 
-        {/* Morning mist — drifts constantly, and as a whole thickens then
+        {/* Morning mist â€” drifts constantly, and as a whole thickens then
             clears over the same 5-minute arc as the dawn light, echoing the
-            spec's forest → mist → open fields progression */}
+            spec's forest â†’ mist â†’ open fields progression */}
         <div style={{
           position: 'absolute', bottom: '20%', left: '-15%', width: '130%', height: '18%',
           animation: !reducedMotion ? 'train-window-mist-envelope 300s linear forwards' : 'none',
@@ -320,7 +320,7 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
           }} />
         </div>
 
-        {/* Tunnel darkness — the outside world briefly disappears */}
+        {/* Tunnel darkness â€” the outside world briefly disappears */}
         <div style={{
           position: 'absolute', inset: 0, pointerEvents: 'none',
           background: '#000',
@@ -328,12 +328,12 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
           transition: inTunnel ? 'opacity 0.5s ease-in' : 'opacity 1.1s ease-out',
         }} aria-hidden="true" />
 
-        {/* Glass reflection — a faint ghost of the compartment's warm lamplight
+        {/* Glass reflection â€” a faint ghost of the compartment's warm lamplight
             sitting on the near surface of the glass, not the scenery beyond it.
             Drifts a touch opposite the camera's own motion, the way a real
             reflection would as your head (not the world outside) moves. In a
             tunnel, with nothing outside to compete with it, it becomes the
-            dominant thing on the pane — the window turns into a mirror. */}
+            dominant thing on the pane â€” the window turns into a mirror. */}
         <div style={{
           position: 'absolute', inset: 0, pointerEvents: 'none',
           transform: 'translate(calc(var(--parallax-x, 0px) * -0.06), calc(var(--parallax-y, 0px) * -0.06))',
@@ -342,7 +342,7 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
             linear-gradient(118deg, transparent 60%, rgba(255,214,170,${0.06 + b * 0.05}) 68%, transparent 76%)`,
         }} aria-hidden="true" />
 
-        {/* Tunnel-only reflection boost — with nothing outside to compete,
+        {/* Tunnel-only reflection boost â€” with nothing outside to compete,
             the lamp's ghost on the glass gets noticeably stronger */}
         <div style={{
           position: 'absolute', inset: 0, pointerEvents: 'none',
@@ -354,7 +354,7 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
           transition: 'opacity 0.6s ease',
         }} aria-hidden="true" />
 
-        {/* Hidden decals — only visible where the condensation above is wiped clear */}
+        {/* Hidden decals â€” only visible where the condensation above is wiped clear */}
         <svg
           aria-hidden="true"
           style={{ position: 'absolute', top: '30%', left: '52%', width: 76, height: 32, opacity: 0.55 }}
@@ -378,8 +378,8 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
           />
         </svg>
 
-        {/* Condensation — wipe with the pointer to clear it. No hint is ever shown. */}
-        {/* No pointer handlers here — this deep in the 3D rig, native
+        {/* Condensation â€” wipe with the pointer to clear it. No hint is ever shown. */}
+        {/* No pointer handlers here â€” this deep in the 3D rig, native
             hit-testing on a <canvas> is unreliable on real browsers (the
             same issue that broke the compartment's collectibles). Wiping is
             driven imperatively via `ref` from a flat overlay outside the
@@ -389,7 +389,7 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
           style={{ position: 'absolute', inset: 0, cursor: 'none' }}
         />
 
-        {/* A sleeve and hand, reaching up from below to clear the glass —
+        {/* A sleeve and hand, reaching up from below to clear the glass â€”
             the one moment this scene lets you see any part of "yourself."
             Fades in only while actively wiping; no character model, just
             the impression of an arm caught at the edge of the frame. */}
@@ -415,8 +415,8 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
         </div>
       </div>
 
-      {/* ── Frame — wood with a brass inner ring, deepened with an inset
-          shadow so the glass reads as recessed rather than flush ── */}
+      {/* â”€â”€ Frame â€” wood with a brass inner ring, deepened with an inset
+          shadow so the glass reads as recessed rather than flush â”€â”€ */}
       <div style={{
         position: 'absolute', inset: 0,
         border: `6px solid`,

@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import { useTimeline } from '@/engine/TimelineDirector/TimelineContext'
 import { SceneErrorBoundary } from '@/engine/ErrorBoundaries/SceneErrorBoundary'
 import type { SceneId } from '@/types/scene'
+import { SceneDepth } from '@/components/world/SceneDepth'
 
 // ── Lazy-load every scene — each is independently code-split ─────────────────
 
@@ -137,6 +138,7 @@ function SceneLayer({ sceneId, opacity, zIndex }: SceneLayerProps) {
     >
       <SceneErrorBoundary sceneName={sceneId}>
         <SceneComponent />
+        <SceneDepth sceneId={sceneId} />
       </SceneErrorBoundary>
     </div>
   )

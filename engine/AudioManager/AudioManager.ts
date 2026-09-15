@@ -42,6 +42,7 @@ export class AudioManager {
   private activeMusicId: number | null = null
   private activeMusicKey: MusicKey | null = null
   private activeAmbient: Map<AmbientLayerKey, number> = new Map()
+  private pendingStops = new Set<ReturnType<typeof setTimeout>>()
   private isMuted = false
   private musicVolume = 0.7
   private sfxVolume = 0.8
@@ -87,7 +88,7 @@ export class AudioManager {
       if (current) {
         current.fade(this.musicVolume, 0, fadeOut, this.activeMusicId)
         const currentId = this.activeMusicId
-        setTimeout(() => current.stop(currentId), fadeOut)
+        this.releaseAfterFade(this.activeMusicKey, current, currentId, fadeOut)
       }
     }
 
@@ -108,7 +109,7 @@ export class AudioManager {
     if (howl) {
       howl.fade(this.musicVolume, 0, fadeDuration, this.activeMusicId)
       const id = this.activeMusicId
-      setTimeout(() => howl.stop(id), fadeDuration)
+      this.releaseAfterFade(this.activeMusicKey, howl, id, fadeDuration)
     }
     this.activeMusicKey = null
     this.activeMusicId = null
@@ -133,7 +134,7 @@ export class AudioManager {
     const howl = this.howls.get(key)
     if (howl) {
       howl.fade(0.4, 0, TIMING.AMBIENT_FADE, id)
-      setTimeout(() => howl.stop(id), TIMING.AMBIENT_FADE)
+      this.releaseAfterFade(key, howl, id, TIMING.AMBIENT_FADE)
     }
     this.activeAmbient.delete(key)
     this.notify()
@@ -217,6 +218,10 @@ export class AudioManager {
   }
 
   dispose(): void {
+    this.pendingStops.forEach(clearTimeout)
+    this.pendingStops.clear()
+    this.activeMusicKey = null
+    this.activeMusicId = null
     this.howls.forEach((howl) => howl.unload())
     this.howls.clear()
     this.activeAmbient.clear()
@@ -224,6 +229,19 @@ export class AudioManager {
   }
 
   // ── Private ────────────────────────────────────────────────────────────────
+
+  private releaseAfterFade(key: string, howl: HowlInstance, id: number, delay: number): void {
+    const timer = setTimeout(() => {
+      this.pendingStops.delete(timer)
+      howl.stop(id)
+      // A rapid revisit may already be playing another instance of this track.
+      if (this.activeMusicKey === key || this.activeAmbient.has(key as AmbientLayerKey)) return
+      if (this.howls.get(key) !== howl) return
+      howl.unload()
+      this.howls.delete(key)
+    }, delay)
+    this.pendingStops.add(timer)
+  }
 
   private getOrCreate(key: string, loop: boolean): HowlInstance {
     const existing = this.howls.get(key)
