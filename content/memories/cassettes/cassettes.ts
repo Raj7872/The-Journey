@@ -21,7 +21,7 @@ export const CASSETTES: CassetteMemory[] = [
     unlockCondition: { type: 'free' },
     notebookSection: 9,
     notebookOrder: 1,
-    tapeLabel: 'Your voice, whenever I needed to hear it most.',
+    tapeLabel: 'A recording I go back to more than I probably should.',
     audioSrc: ASSET_KEYS.AUD_VOICE_CASSETTE_A,
     displayDuration: '1:47',
     side: 'A',

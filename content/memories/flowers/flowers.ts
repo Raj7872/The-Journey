@@ -22,7 +22,7 @@ export const FLOWERS: FlowerMemory[] = [
     notebookOrder: 1,
     species: 'Sunflower',
     color: '#f0c020',
-    memoryText: 'It only knows how to face the light. That\'s all you\'ve ever done for me too.',
+    memoryText: 'Picked this without a reason. Kept it without one either.',
     pressedDate: 'A Tuesday, no particular reason',
   },
 ]

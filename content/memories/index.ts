@@ -31,10 +31,10 @@ const FINAL_LETTER: FinalLetterMemory = {
   unlockCondition: { type: 'all-other-collected' },
   notebookSection: 10,
   notebookOrder: 1,
-  body: `There were never one hundred reasons.<br><br>
-There were only one hundred moments.<br><br>
-The reasons...<br><br>
-<em>were always you.</em>`,
+  body: `It was never really about counting to a hundred.<br><br>
+It was a hundred ordinary mornings, a hundred small moments I never bothered to number.<br><br>
+Turns out...<br><br>
+<em>they were all you.</em>`,
 }
 
 /** All memories in discovery order */

@@ -22,11 +22,11 @@ export const RECEIPTS: ReceiptMemory[] = [
     notebookOrder: 1,
     cafeName: 'Platform Café',
     items: [
-      { name: 'One warm coffee', price: 'for the quiet mornings' },
-      { name: 'One sweeter than usual', price: 'because you have had a sip of it' },
-      { name: 'One reason to stay', price: 'you' },
+      { name: 'A corner table', price: 'apparently reserved for us' },
+      { name: 'Something too sweet', price: 'you insisted on ordering it' },
+      { name: 'One extra hour we didn\'t plan for', price: 'no charge' },
     ],
-    total: 'Priceless.',
-    footerNote: 'Thank you for coming back. Every time.',
+    total: 'Worth it.',
+    footerNote: 'Come back again. I\'ll be here.',
   },
 ]
