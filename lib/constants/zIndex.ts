@@ -15,7 +15,7 @@ export const Z_INDEX = {
   NOTEBOOK: 85,        // Notebook overlay — once open, nothing but the scene
                        // transition fade and the cursor may sit above it
   TRANSITION: 90,      // Scene transition overlay
-  CURSOR: 100,         // Custom cursor (always on top)
+  CURSOR: 400,         // Custom cursor (always on top)
   TOAST: 200,          // Debug toasts (dev only)
   DEBUG_PANEL: 210,    // Debug panel (dev only, above everything including cursor)
 } as const

@@ -23,10 +23,10 @@ const cassette001 = CASSETTES.find((m) => m.id === 'cassette-001')
 // and point `image` at it (e.g. '/images/memories/tunnel/first-laugh.png')
 // to have that poster show a real photo instead.
 const MEMORY_POSTERS: { label: string; left: string; top: string; image?: string }[] = [
-  { label: 'Enemy of Love',        left: '8%',  top: '20%' },
+  { label: 'Our Little Rivalry',        left: '8%',  top: '20%' },
   { label: 'A flower for your hair',    left: '26%', top: '22%' },
-  { label: 'Your First ILoveYou',         left: '44%', top: '20%' },
-  { label: 'Protective Baby',        left: '62%', top: '22%' },
+  { label: 'The First "I Love You"',    left: '44%', top: '20%' },
+  { label: 'Always Watching Out for You', left: '62%', top: '22%' },
   { label: 'The First Sunflower',        left: '80%', top: '20%' },
 ]
 

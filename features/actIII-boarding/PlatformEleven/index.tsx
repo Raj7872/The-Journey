@@ -1,5 +1,7 @@
 'use client'
 
+import { TimberBench } from '@/components/scenery/DimensionalProps'
+
 import { useEffect, useState } from 'react'
 
 import { useScene } from '@/engine/SceneManager/SceneContext'
@@ -10,7 +12,6 @@ import { StationObject } from '@/components/station/StationObject'
 import { WorldObject } from '@/components/world/WorldObject'
 import { PerspectiveFloor } from '@/components/common/PerspectiveFloor'
 import { useParallax } from '@/hooks/useParallax'
-import { groundShadow, faceGradient } from '@/lib/utils/shading'
 import { TIMING } from '@/lib/constants/timing'
 
 /**
@@ -114,28 +115,12 @@ export function PlatformEleven() {
         hint="Waiting, same as you"
         interactSfx="paper-rustle"
         style={{
-          position: 'absolute', bottom: '28%', left: '20%',
+          position: 'absolute', bottom: '8%', left: '20%',
           transform: `translateX(calc(var(--parallax-x, 0px) * 0.5))`,
           opacity: 0.6 + b * 0.2,
         }}
       >
-        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 3 }}>
-          <div style={groundShadow(100, 0.35)} />
-          <div style={{
-            width: 110, height: 14,
-            background: faceGradient(46+Math.round(w*10), 34+Math.round(w*7), 20+Math.round(w*4), 0.9, 10),
-            borderRadius: 2,
-            borderTop: `1px solid rgba(210,155,72,${0.14 + b * 0.1})`,
-          }} />
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 10px' }}>
-            {[0, 1, 2].map((i) => (
-              <div key={i} style={{
-                width: 6, height: 22, borderRadius: '0 0 2px 2px',
-                background: 'linear-gradient(180deg, rgba(46,34,20,0.9), rgba(26,18,10,0.9))',
-              }} />
-            ))}
-          </div>
-        </div>
+        <TimberBench width={240} />
       </WorldObject>
 
       {/* Platform sign */}

@@ -1,5 +1,7 @@
 'use client'
 
+import { MeadowLandscape } from '@/components/scenery/MeadowLandscape'
+
 import { useEffect, useState } from 'react'
 
 import { useScene } from '@/engine/SceneManager/SceneContext'
@@ -47,59 +49,7 @@ export function TheSilence() {
       role="region"
       aria-label="A letter, unfolded"
     >
-      <div style={{
-        position: 'absolute', inset: 0,
-        background: `linear-gradient(180deg,
-          rgba(${Math.round(232+w*16)},${Math.round(202+w*22)},${Math.round(168+w*20)},1) 0%,
-          rgba(${Math.round(250+w*4)},${Math.round(228+w*10)},${Math.round(192+w*10)},1) 60%,
-          rgba(${Math.round(253+w*2)},${Math.round(236+w*6)},${Math.round(204+w*6)},1) 100%)`,
-        transition: 'background 2s ease',
-      }} aria-hidden="true" />
-
-      {/* The same low, soft sun that's been with us since the-field —
-          quiet continuity, not a new light source */}
-      <div style={{
-        position: 'absolute', bottom: '40%', left: '14%',
-        width: 100, height: 100, borderRadius: '50%', transform: 'translateX(-50%)',
-        background: `radial-gradient(circle, rgba(255,238,205,0.85) 0%, rgba(255,212,152,0.4) 45%, transparent 75%)`,
-        boxShadow: '0 0 120px 50px rgba(255,215,160,0.2)',
-      }} aria-hidden="true" />
-
-      {/* Ground — so the horizon reads as a place, not a color fill */}
-      <div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0, height: '18%',
-        background: `linear-gradient(180deg,
-          rgba(${Math.round(150+w*20)},${Math.round(140+w*18)},${Math.round(95+w*12)},1) 0%,
-          rgba(${Math.round(120+w*16)},${Math.round(110+w*14)},${Math.round(72+w*8)},1) 100%)`,
-      }} aria-hidden="true" />
-
-      {/* An echo of everywhere we've just walked — the tree, the bench, the
-          train resting at the edge — kept low on the horizon, well clear of
-          the letter. Not a replay, just a trace. */}
-      <div style={{ position: 'absolute', inset: 0, opacity: 0.2, pointerEvents: 'none' }} aria-hidden="true">
-        {[4, 10, 90, 96].map((x, i) => (
-          <div key={x} style={{
-            position: 'absolute', bottom: '15%', left: `${x}%`,
-            width: 12 + (i % 2) * 4, height: 18 + (i % 2) * 8,
-            borderRadius: '50% 50% 10% 10%',
-            background: 'rgba(70,55,34,0.75)',
-          }} />
-        ))}
-        <div style={{ position: 'absolute', bottom: '16%', left: '78%', transform: 'translateX(-50%)' }}>
-          <div style={{ width: 3, height: 28, margin: '0 auto', background: 'rgba(70,55,34,0.92)' }} />
-          <div style={{
-            position: 'absolute', top: -34, left: '50%', transform: 'translateX(-50%)',
-            width: 52, height: 42, borderRadius: '50%', background: 'rgba(70,55,34,0.88)',
-          }} />
-          <div style={{
-            position: 'absolute', bottom: -2, left: '50%', transform: 'translateX(-50%)',
-            width: 34, height: 5, borderRadius: 2, background: 'rgba(70,55,34,0.92)',
-          }} />
-        </div>
-        <div style={{ position: 'absolute', bottom: '12%', left: '4%' }}>
-          <div style={{ width: 100, height: 30, borderRadius: '4px 14px 3px 3px', background: 'rgba(70,55,34,0.85)' }} />
-        </div>
-      </div>
+      <MeadowLandscape view="letter" />
 
       {/* Sunlight quietly strengthening the longer the letter takes — a
           one-shot glow, never looping, tied to nothing but time spent here */}

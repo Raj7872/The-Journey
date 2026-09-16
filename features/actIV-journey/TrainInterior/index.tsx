@@ -1,5 +1,7 @@
 'use client'
 
+import { SunflowerBouquet, PaneledDoor } from '@/components/scenery/DimensionalProps'
+
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
@@ -303,7 +305,7 @@ export function TrainInterior() {
             {showWallMessage && (
               <div style={{ position: 'absolute', top: '16%', left: '3%', width: 300 }} aria-hidden="true">
                 <HandwrittenText
-                  text="Thank you for coming.<br>Hope you collected all your belonging before you get off the Train.<br>You are so Amazing, and I Love You very much. ❤️"
+                  text="Thank you for coming this far.<br>Don't forget anything on your way out.<br>You've made this ride worth taking. ❤️"
                   color={`rgba(242,232,213,${0.7 + b * 0.2})`}
                   style={{ fontFamily: 'var(--font-body,"Crimson Text",Georgia,serif)', fontSize: 15, lineHeight: 1.6 }}
                 />
@@ -314,12 +316,7 @@ export function TrainInterior() {
                 No spectacle, just warm light where there was wall before. */}
             {rideState === 'doors-open' && (
               <div ref={exitRef} style={{ position: 'absolute', top: '32%', left: '2%', width: 58, height: 130 }} aria-hidden="true">
-                <div style={{
-                  position: 'absolute', inset: 0, borderRadius: '3px 3px 0 0',
-                  background: `linear-gradient(180deg, rgba(255,222,165,0.92) 0%, rgba(255,196,130,0.8) 100%)`,
-                  boxShadow: `0 0 44px 18px rgba(255,200,130,${0.35 + b * 0.15})`,
-                }} />
-                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '28%', background: 'rgba(70,55,28,0.32)' }} />
+                <PaneledDoor width={58} height={130} open />
               </div>
             )}
 
@@ -480,11 +477,12 @@ export function TrainInterior() {
                 <div style={{
                   position: 'relative', width: 210, height: 118,
                   transformOrigin: 'bottom center',
-                  transform: 'rotateX(40deg)',
+                  transform: 'none',
                 }}>
                   {/* Planked wood — distinct boards with dark seams between them */}
                   <div style={{
                     position: 'absolute', inset: 0, borderRadius: 4,
+                    clipPath: 'polygon(10% 36%, 90% 36%, 100% 100%, 0 100%)',
                     background: `
                       linear-gradient(90deg,
                         transparent 0%, transparent 19%, rgba(10,6,3,0.55) 19%, rgba(10,6,3,0.55) 21%,
@@ -502,6 +500,7 @@ export function TrainInterior() {
                   {/* A soft sheen where the overhead lamp catches the wood */}
                   <div style={{
                     position: 'absolute', inset: 0, borderRadius: 4,
+                    clipPath: 'polygon(10% 36%, 90% 36%, 100% 100%, 0 100%)',
                     background: `radial-gradient(ellipse 60% 45% at 62% 30%, rgba(255,220,170,${0.14 + b * 0.08}) 0%, transparent 70%)`,
                   }} />
                   {/* Scratches + a ring stain, worn into the surface */}
@@ -509,51 +508,10 @@ export function TrainInterior() {
                   <div style={{ position: 'absolute', top: 60, left: 128, width: 24, height: 1.5, background: 'rgba(15,10,6,0.22)', transform: 'rotate(9deg)' }} />
                   <div style={{ position: 'absolute', top: 18, right: 22, width: 20, height: 20, borderRadius: '50%', border: '1px solid rgba(60,40,15,0.35)' }} />
 
-                  {/* Vase of sunflowers */}
-                  <div style={{ position: 'absolute', top: 6, left: 16 }}>
-                    <div style={{ position: 'relative' }}>
-                      {[-9, -3, 4, 10].map((x, i) => (
-                        <div key={x} style={{
-                          position: 'absolute', bottom: 14, left: `calc(50% + ${x}px)`,
-                          width: 1.5, height: 24 + (i % 2) * 5,
-                          background: `rgba(${52+Math.round(w*8)},${86+Math.round(w*10)},${58+Math.round(w*6)},0.75)`,
-                          transformOrigin: 'bottom center', transform: `rotate(${x * 1.4}deg)`,
-                        }} />
-                      ))}
-                      {/* Each bloom: six petals fanned radially around a dark seed-head center */}
-                      {[-9, -3, 4, 10].map((x, i) => (
-                        <div key={`bloom-${x}`} style={{
-                          position: 'absolute', bottom: 32 + (i % 2) * 5, left: `calc(50% + ${x}px)`,
-                          width: 15, height: 15, transform: 'translateX(-50%)',
-                        }}>
-                          <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                            {[0, 60, 120, 180, 240, 300].map((angle) => (
-                              <div key={angle} style={{
-                                position: 'absolute', bottom: '50%', left: '50%',
-                                width: 5, height: 8,
-                                borderRadius: '50% 50% 50% 50% / 65% 65% 35% 35%',
-                                background: `linear-gradient(180deg, rgba(${255},${205+Math.round(w*6)},${60+Math.round(w*10)},0.96), rgba(${226},${152+Math.round(w*8)},${24+Math.round(w*6)},0.94))`,
-                                transformOrigin: 'bottom center',
-                                transform: `translateX(-50%) rotate(${angle + i * 12}deg) translateY(-3px)`,
-                              }} />
-                            ))}
-                            <div style={{
-                              position: 'absolute', top: '50%', left: '50%', width: 6.5, height: 6.5,
-                              borderRadius: '50%', transform: 'translate(-50%,-50%)',
-                              background: `${specularHighlight('35%', '30%', '65%', 0.25)}, radial-gradient(circle, rgba(96,62,26,0.95) 0%, rgba(48,30,14,0.95) 100%)`,
-                            }} />
-                          </div>
-                        </div>
-                      ))}
-                      <div style={{
-                        width: 14, height: 16, borderRadius: '2px 2px 6px 6px', margin: '0 auto',
-                        background: `${specularHighlight('30%', '20%', '70%', 0.35)}, linear-gradient(180deg, rgba(${150+Math.round(w*15)},${170+Math.round(w*12)},${175+Math.round(w*10)},0.9), rgba(${100+Math.round(w*12)},${118+Math.round(w*10)},${125+Math.round(w*8)},0.92))`,
-                      }} />
-                    </div>
-                  </div>
+                  <div style={{ position: 'absolute', top: -12, left: 30 }}><SunflowerBouquet width={44} /></div>
 
                   {/* Coffee cup — saucer, handle, steam, rippling surface */}
-                  <div style={{ position: 'absolute', top: 60, right: 24 }}>
+                  <div style={{ position: 'absolute', top: 88, right: 24 }}>
                     <div style={{ position: 'relative' }}>
                       <div style={{
                         width: 24, height: 7, borderRadius: '50%', position: 'absolute', bottom: -2, left: -6,
@@ -583,7 +541,7 @@ export function TrainInterior() {
                   </div>
 
                   {/* Pocket watch */}
-                  <div style={{ position: 'absolute', top: 44, left: 94, transform: 'rotate(8deg)', opacity: 0.65 + b * 0.2 }}>
+                  <div style={{ position: 'absolute', top: 73, left: 108, transform: 'rotate(8deg)', opacity: 0.65 + b * 0.2 }}>
                     <div style={{
                       width: 12, height: 12, borderRadius: '50%',
                       background: `${specularHighlight('32%', '25%', '75%', 0.55)}, linear-gradient(180deg, rgba(215,175,85,0.9), rgba(140,108,40,0.9))`,
@@ -594,7 +552,7 @@ export function TrainInterior() {
                   </div>
 
                   {/* Pencil + notebook */}
-                  <div style={{ position: 'absolute', top: 58, left: 38, opacity: 0.6 + b * 0.2 }}>
+                  <div style={{ position: 'absolute', top: 84, left: 38, opacity: 0.6 + b * 0.2 }}>
                     <div style={{
                       width: 16, height: 12,
                       background: `${paperFiber()}, rgba(${230+Math.round(w*10)},${222+Math.round(w*8)},${202+Math.round(w*4)},0.9)`,
@@ -614,7 +572,7 @@ export function TrainInterior() {
                       over by then, and the envelope below has taken its own
                       place rather than replacing this one. */}
                   {!isFinalCarriage && (
-                    <div ref={napkinRef} style={{ position: 'absolute', top: 78, left: 86, transform: 'rotate(-3deg)' }}>
+                    <div ref={napkinRef} style={{ position: 'absolute', top: 93, left: 86, transform: 'rotate(-3deg)' }}>
                       <div style={{
                         width: 20, height: 16,
                         background: `${paperFiber()}, rgba(${Math.round(232+w*10)},${Math.round(226+w*8)},${Math.round(210+w*4)},0.9)`,
@@ -628,7 +586,7 @@ export function TrainInterior() {
                       thing to notice rather than the napkin turning into a
                       letter. */}
                   {isFinalCarriage && (
-                    <div ref={envelopeRef} style={{ position: 'absolute', top: 20, left: 148, transform: 'rotate(4deg)' }}>
+                    <div ref={envelopeRef} style={{ position: 'absolute', top: 61, left: 148, transform: 'rotate(4deg)' }}>
                       <div style={{
                         width: 26, height: 18,
                         background: `${paperFiber()}, rgba(${Math.round(232+w*10)},${Math.round(222+w*8)},${Math.round(200+w*4)},0.92)`,
@@ -640,14 +598,15 @@ export function TrainInterior() {
 
                 {/* Front edge — thickness beneath the tilted surface */}
                 <div style={{
-                  width: 210, height: 20,
+                  width: 210, height: 12,
+                  boxShadow: 'inset 0 2px 0 #b5955b, 0 3px 0 #251f18',
                   background: `${woodGrain(4, 0.05)}, ${faceGradient(40+Math.round(w*10), 30+Math.round(w*7), 18+Math.round(w*4), 0.92, 12)}`,
                   borderRadius: '0 0 3px 3px',
                 }} />
                 {/* Pedestal leg, tapering down toward the floor */}
                 <div style={{
                   position: 'absolute', top: 128, left: '50%', transform: 'translateX(-50%)',
-                  width: 10, height: 46, clipPath: 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
+                  width: 24, height: 60, clipPath: 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
                   background: `${woodGrain(90, 0.06)}, ${faceGradient(34+Math.round(w*8), 25+Math.round(w*6), 14+Math.round(w*3))}`,
                 }} />
               </div>

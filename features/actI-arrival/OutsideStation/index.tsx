@@ -1,5 +1,7 @@
 'use client'
 
+import { PaneledDoor } from '@/components/scenery/DimensionalProps'
+
 import { useScene } from '@/engine/SceneManager/SceneContext'
 import { useTimeline } from '@/engine/TimelineDirector/TimelineContext'
 import { AmbientLight } from '@/components/station/AmbientLight'
@@ -180,7 +182,7 @@ export function OutsideStation() {
       <div
         style={{
           position: 'absolute',
-          bottom: '48%',
+          bottom: '64%',
           left: '50%',
           transform: `translateX(-50%) translateX(calc(var(--parallax-x, 0px) * 0.5))`,
           textAlign: 'center',
@@ -265,36 +267,11 @@ export function OutsideStation() {
           bottom: '28%',
           left: '50%',
           transform: `translateX(-50%) translateX(calc(var(--parallax-x, 0px) * 0.5))`,
-          width: 64,
-          height: 88,
+          width: 170,
+          height: 270,
         }}
       >
-        <div
-          style={{
-            width: '100%',
-            height: '100%',
-            background: `rgba(${Math.round(14 + warmth * 8)},${Math.round(12 + warmth * 4)},${Math.round(10 + warmth * 2)},0.95)`,
-            borderTop: `1px solid rgba(184,146,42,${0.2 + brightness * 0.25})`,
-            borderLeft: `1px solid rgba(184,146,42,${0.2 + brightness * 0.25})`,
-            borderRight: `1px solid rgba(184,146,42,${0.2 + brightness * 0.25})`,
-            borderBottom: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transition: 'border-color 2s ease',
-          }}
-        >
-          {/* Door handle */}
-          <div
-            style={{
-              width: 4,
-              height: 16,
-              background: `rgba(184,146,42,${0.3 + brightness * 0.3})`,
-              borderRadius: 2,
-              marginLeft: 12,
-            }}
-          />
-        </div>
+        <PaneledDoor width={170} height={270} />
       </StationObject>
 
       {/* Ground platform line */}

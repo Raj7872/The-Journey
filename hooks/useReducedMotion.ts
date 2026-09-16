@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { animationManager } from '@/engine/AnimationManager/AnimationManager'
 
 /**
  * Returns true if the user prefers reduced motion.
@@ -11,11 +12,13 @@ export function useReducedMotion(): boolean {
 
   useEffect(() => {
     const query = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setReducedMotion(query.matches)
+    const update = () => setReducedMotion(query.matches || animationManager.getState().reducedMotion)
+    update()
+    const unsubscribe = animationManager.subscribe(update)
 
-    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
+    const handler = () => update()
     query.addEventListener('change', handler)
-    return () => query.removeEventListener('change', handler)
+    return () => { query.removeEventListener('change', handler); unsubscribe() }
   }, [])
 
   return reducedMotion

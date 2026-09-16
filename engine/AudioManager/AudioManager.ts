@@ -23,6 +23,7 @@ type HowlInstance = {
   unload: () => void
   state: () => 'unloaded' | 'loading' | 'loaded'
   on: (event: string, fn: () => void, id?: number) => void
+  once: (event: string, fn: () => void, id?: number) => void
 }
 
 type HowlConstructor = new (options: {
@@ -42,6 +43,8 @@ export class AudioManager {
   private activeMusicId: number | null = null
   private activeMusicKey: MusicKey | null = null
   private activeAmbient: Map<AmbientLayerKey, number> = new Map()
+  private ambientGains = new Map<AmbientLayerKey, number>()
+  private effectGains = new Map<string, Map<number, number>>()
   private pendingStops = new Set<ReturnType<typeof setTimeout>>()
   private isMuted = false
   private musicVolume = 0.7
@@ -123,7 +126,8 @@ export class AudioManager {
     const howl = this.getOrCreate(key, true)
     const id = howl.play()
     howl.volume(0, id)
-    howl.fade(0, volume, TIMING.AMBIENT_FADE, id)
+    this.ambientGains.set(key, volume)
+    howl.fade(0, this.isMuted ? 0 : volume * this.sfxVolume, TIMING.AMBIENT_FADE, id)
     this.activeAmbient.set(key, id)
     this.notify()
   }
@@ -133,10 +137,11 @@ export class AudioManager {
     if (id === undefined) return
     const howl = this.howls.get(key)
     if (howl) {
-      howl.fade(0.4, 0, TIMING.AMBIENT_FADE, id)
+      howl.fade(howl.volume(undefined, id), 0, TIMING.AMBIENT_FADE, id)
       this.releaseAfterFade(key, howl, id, TIMING.AMBIENT_FADE)
     }
     this.activeAmbient.delete(key)
+    this.ambientGains.delete(key)
     this.notify()
   }
 
@@ -165,7 +170,15 @@ export class AudioManager {
     if (!this.isInitialized || this.isMuted) return
     const howl = this.getOrCreate(key, false)
     const id = howl.play()
-    howl.volume(volume ?? this.sfxVolume, id)
+    const gain = Math.max(0, Math.min(1, volume ?? 1))
+    let instances = this.effectGains.get(key)
+    if (!instances) { instances = new Map(); this.effectGains.set(key, instances) }
+    instances.set(id, gain)
+    howl.volume(gain * this.sfxVolume, id)
+    howl.once('end', () => {
+      instances?.delete(id)
+      if (!instances?.size) this.effectGains.delete(key)
+    }, id)
   }
 
   // ── Volume ────────────────────────────────────────────────────────────────
@@ -180,6 +193,7 @@ export class AudioManager {
 
   setSfxVolume(volume: number): void {
     this.sfxVolume = Math.max(0, Math.min(1, volume))
+    this.applyEffectVolumes()
     this.notify()
   }
 
@@ -191,6 +205,7 @@ export class AudioManager {
 
   unmute(): void {
     this.isMuted = false
+    this.applyEffectVolumes()
     if (this.activeMusicKey && this.activeMusicId !== null) {
       this.howls.get(this.activeMusicKey)?.volume(this.musicVolume, this.activeMusicId)
     }
@@ -225,10 +240,22 @@ export class AudioManager {
     this.howls.forEach((howl) => howl.unload())
     this.howls.clear()
     this.activeAmbient.clear()
+    this.ambientGains.clear()
+    this.effectGains.clear()
     this.listeners.clear()
   }
 
   // ── Private ────────────────────────────────────────────────────────────────
+
+  private applyEffectVolumes(): void {
+    const master = this.isMuted ? 0 : this.sfxVolume
+    this.activeAmbient.forEach((id, key) => {
+      this.howls.get(key)?.volume((this.ambientGains.get(key) ?? 0.4) * master, id)
+    })
+    this.effectGains.forEach((instances, key) => {
+      instances.forEach((gain, id) => this.howls.get(key)?.volume(gain * master, id))
+    })
+  }
 
   private releaseAfterFade(key: string, howl: HowlInstance, id: number, delay: number): void {
     const timer = setTimeout(() => {

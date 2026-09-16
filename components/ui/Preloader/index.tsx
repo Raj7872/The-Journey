@@ -119,11 +119,11 @@ export function Preloader({ onComplete }: PreloaderProps) {
       <div
         style={{
           position: 'absolute',
-          bottom: 0,
+          top: '50%',
           left: '50%',
-          transform: 'translateX(-50%)',
-          width: 300,
-          height: 380,
+          transform: 'translate(-50%, -50%)',
+          width: 'min(510px, 92vw)',
+          height: 'min(560px, 88vh)',
           borderTop: `1px solid ${lamp1 ? 'rgba(212,132,58,0.18)' : 'rgba(212,132,58,0.06)'}`,
           borderLeft: `1px solid ${lamp1 ? 'rgba(212,132,58,0.18)' : 'rgba(212,132,58,0.06)'}`,
           borderRight: `1px solid ${lamp1 ? 'rgba(212,132,58,0.18)' : 'rgba(212,132,58,0.06)'}`,
@@ -137,19 +137,19 @@ export function Preloader({ onComplete }: PreloaderProps) {
       {/* Lamp 1 — left */}
       <Lamp
         visible={lamp1}
-        style={{ position: 'absolute', bottom: 180, left: '28%' }}
+        style={{ position: 'absolute', top: '46%', left: '16%' }}
       />
 
       {/* Lamp 2 — right */}
       <Lamp
         visible={lamp2}
-        style={{ position: 'absolute', bottom: 180, right: '28%' }}
+        style={{ position: 'absolute', top: '46%', right: '16%' }}
       />
 
       {/* Lamp 3 — center top (subtle) */}
       <Lamp
         visible={lamp3}
-        style={{ position: 'absolute', top: '18%', left: '50%', transform: 'translateX(-50%)' }}
+        style={{ position: 'absolute', top: '8%', left: '50%', transform: 'translateX(-50%)' }}
         small
       />
 
@@ -162,7 +162,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
           position: 'relative',
           zIndex: 5,
           textAlign: 'center',
-          marginTop: '-60px',
+          marginTop: '50px',
         }}
       >
         <div
@@ -226,6 +226,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
         {/* Enter prompt */}
         <button
           onClick={handleEnter}
+          disabled={!enterVisible || phase === 'exiting'}
           style={{
             marginTop: 48,
             background: 'transparent',
@@ -320,7 +321,7 @@ function PreloaderClock({ visible }: { visible: boolean }) {
     <div
       style={{
         position: 'absolute',
-        top: '12%',
+        top: 'calc(50% - min(280px, 44vh) + 45px)',
         left: '50%',
         transform: 'translateX(-50%)',
         opacity: visible ? 1 : 0,

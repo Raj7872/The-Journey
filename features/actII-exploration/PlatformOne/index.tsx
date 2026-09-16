@@ -1,5 +1,7 @@
 'use client'
 
+import { TimberBench } from '@/components/scenery/DimensionalProps'
+
 import { useScene } from '@/engine/SceneManager/SceneContext'
 import { useTimeline } from '@/engine/TimelineDirector/TimelineContext'
 import { useNotebook } from '@/engine/NotebookManager/NotebookContext'
@@ -134,23 +136,7 @@ export function PlatformOne() {
         }}
       >
         <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 3 }}>
-          <div style={groundShadow(110, 0.4)} />
-          <div style={{
-            width: 120, height: 16,
-            background: `linear-gradient(180deg,
-              rgba(${Math.round(52+warmth*12)},${Math.round(38+warmth*8)},${Math.round(22+warmth*4)},0.9),
-              rgba(38,28,16,0.9))`,
-            borderRadius: 2,
-            borderTop: `1px solid rgba(184,146,42,${0.14 + brightness * 0.1})`,
-          }} />
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 12px' }}>
-            {[0,1,2].map(i => (
-              <div key={i} style={{
-                width: 7, height: 24, borderRadius: '0 0 2px 2px',
-                background: 'linear-gradient(180deg, rgba(50,38,24,0.9), rgba(30,22,12,0.9))',
-              }} />
-            ))}
-          </div>
+          <TimberBench width={210} />
           {/* Letter visible under bench */}
           {letter001 && !isCollected(letter001.id) && (
             <div style={{
@@ -176,7 +162,7 @@ export function PlatformOne() {
         }}
         style={{
           position: 'absolute',
-          bottom: '31%',
+          bottom: 'calc(30% + 34px)',
           left: '24%',
           transform: `translateX(calc(var(--parallax-x, 0px) * 0.6))`,
         }}
@@ -209,27 +195,11 @@ export function PlatformOne() {
         }}
       >
         <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 3 }}>
-          <div style={groundShadow(92, 0.4)} />
-          <div style={{
-            width: 100, height: 16,
-            background: `linear-gradient(180deg,
-              rgba(${Math.round(50+warmth*12)},${Math.round(36+warmth*8)},${Math.round(20+warmth*4)},0.9),
-              rgba(36,26,14,0.9))`,
-            borderRadius: 2,
-            borderTop: `1px solid rgba(184,146,42,${0.12 + brightness * 0.1})`,
-          }} />
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 10px' }}>
-            {[0,1,2].map(i => (
-              <div key={i} style={{
-                width: 6, height: 20, borderRadius: '0 0 2px 2px',
-                background: 'linear-gradient(180deg, rgba(48,36,22,0.9), rgba(28,20,10,0.9))',
-              }} />
-            ))}
-          </div>
+          <TimberBench width={210} />
           {/* Ticket on bench */}
           {ticket002 && !isCollected(ticket002.id) && (
             <div style={{
-              position: 'absolute', top: -6, right: 12,
+              position: 'absolute', bottom: 32, right: 45,
               width: 28, height: 14,
               background: `rgba(242,232,213,${0.3 + brightness * 0.15})`,
               border: `1px solid rgba(184,146,42,0.2)`,

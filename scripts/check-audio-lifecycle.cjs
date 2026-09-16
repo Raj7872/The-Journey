@@ -9,10 +9,13 @@ vm.runInNewContext(ts.transpileModule(fs.readFileSync('engine/AudioManager/Audio
   setTimeout: fn => { timers.set(++timerId, fn); return timerId; }, clearTimeout: id => timers.delete(id),
 });
 class Sound {
-  constructor() { this.ids = new Set(); this.next = 0; this.unloaded = false; }
+  constructor() { this.ids = new Set(); this.next = 0; this.unloaded = false; this.volumes = new Map(); this.ends = new Map(); }
   play() { this.ids.add(++this.next); return this.next; }
   stop(id) { this.ids.delete(id); }
-  fade() {} volume() {} unload() { this.unloaded = true; this.ids.clear(); }
+  fade(from, to, duration, id) { this.volumes.set(id, to); }
+  volume(value, id) { if (value === undefined) return this.volumes.get(id) ?? 0; if (id === undefined) this.ids.forEach(i => this.volumes.set(i, value)); else this.volumes.set(id, value); return value; }
+  once(event, fn, id) { this.ends.set(id, fn); }
+  unload() { this.unloaded = true; this.ids.clear(); }
 }
 function manager() { const m = new exportsObject.AudioManager(); m.Howl = Sound; m.isInitialized = true; return m; }
 function flush() { const pending = [...timers.values()]; timers.clear(); pending.forEach(fn => fn()); }
@@ -24,3 +27,19 @@ m.startAmbient('rain-exterior'); m.stopAmbient('rain-exterior'); m.startAmbient(
 m.stopAmbient('rain-exterior'); flush(); assert.equal(m.howls.has('rain-exterior'), false);
 m.stopMusic(); assert.ok(timers.size); m.dispose(); assert.equal(timers.size, 0); assert.equal(m.howls.size, 0); assert.equal(m.getState().isMusicPlaying, false);
 console.log('PASS: fade lifetime, rapid music revisit, ambient restart, retired audio release, disposal timer cleanup');
+
+const audio = manager();
+audio.setSfxVolume(0.25); audio.playSfx('train-whistle', 0.4);
+const whistle = audio.howls.get('train-whistle');
+assert.equal(whistle.volume(undefined, 1), 0.1, 'per-effect gain must multiply master');
+audio.startAmbient('rain-exterior', 0.4);
+assert.equal(audio.howls.get('rain-exterior').volume(undefined, 1), 0.1);
+audio.setSfxVolume(0);
+assert.equal(whistle.volume(undefined, 1), 0, 'already playing effect must mute');
+assert.equal(audio.howls.get('rain-exterior').volume(undefined, 1), 0, 'ambience must follow effects slider');
+audio.setSfxVolume(0.5); audio.mute(); audio.setSfxVolume(0.75);
+assert.equal(whistle.volume(undefined, 1), 0, 'slider must not unmute');
+audio.unmute(); assert.ok(Math.abs(whistle.volume(undefined, 1) - 0.3) < 1e-9);
+whistle.ends.get(1)(); assert.equal(audio.effectGains.has('train-whistle'), false);
+audio.dispose();
+console.log('PASS: SFX master gain, active effects, ambient slider, mute/unmute, finished effect cleanup');

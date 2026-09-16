@@ -17,7 +17,7 @@ interface Props {
 export function ArrivalCarriage({ doorsOpen, stopped, conductorReady, reducedMotion, paused, onBoard }: Props) {
   const id = useId().replace(/:/g, '')
   return (
-    <div style={{ position: 'absolute', bottom: '25%', left: '50%', width: 800, height: 260, transform: 'translateX(-50%)', transformOrigin: '50% 100%', animation: reducedMotion ? 'none' : `carriage-approach ${TIMING.TRAIN_ARRIVAL_STOP - TIMING.TRAIN_ARRIVAL_VISIBLE}ms cubic-bezier(.16,.55,.24,1) both`, animationPlayState: paused ? 'paused' : 'running' }}>
+    <div style={{ position: 'absolute', bottom: '24%', left: '50%', width: 800, height: 260, transform: 'translateX(-50%)', transformOrigin: '50% 100%', animation: reducedMotion ? 'none' : `carriage-approach ${TIMING.TRAIN_ARRIVAL_STOP - TIMING.TRAIN_ARRIVAL_LIGHT}ms cubic-bezier(.25,.55,.35,1) both`, animationPlayState: paused ? 'paused' : 'running' }}>
       <svg aria-hidden="true" width="800" height="260" viewBox="0 0 800 260" style={{ overflow: 'visible' }}>
         <defs>
           <linearGradient id={`${id}-body`} x2="0" y2="1"><stop stopColor="#46534b" /><stop offset="0.18" stopColor="#293a33" /><stop offset="0.65" stopColor="#192b26" /><stop offset="1" stopColor="#0a1516" /></linearGradient>
@@ -72,7 +72,7 @@ export function ArrivalCarriage({ doorsOpen, stopped, conductorReady, reducedMot
         <StationObject label="Board the train" hint="Board" onClick={onBoard} style={{ position: 'absolute', left: 506, top: 72, width: 68, height: 155 }}><div style={{ width: '100%', height: '100%' }} /></StationObject>
       </>}
       <style>{`@keyframes carriage-approach {
-        0% { transform: translate(-140px, -150px) scale(.09); opacity: .25; }
+        0% { transform: translate(-1350px, 0px) scale(.65); opacity: .55; }
         45% { opacity: 1; }
         100% { transform: translateX(-50%) scale(1); opacity: 1; }
       }`}</style>

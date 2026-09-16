@@ -1,5 +1,7 @@
 'use client'
 
+import { TimberBench } from '@/components/scenery/DimensionalProps'
+
 import { useEffect, useRef, useState } from 'react'
 
 import { useScene } from '@/engine/SceneManager/SceneContext'
@@ -10,7 +12,6 @@ import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { AmbientLight } from '@/components/station/AmbientLight'
 import { WorldObject } from '@/components/world/WorldObject'
 import { PerspectiveFloor } from '@/components/common/PerspectiveFloor'
-import { groundShadow, faceGradient } from '@/lib/utils/shading'
 import { ArrivalCarriage } from '@/components/train/ArrivalCarriage'
 import { TIMING } from '@/lib/constants/timing'
 
@@ -53,7 +54,7 @@ function TrainArrivalSequence() {
     const timers = [
       setTimeout(() => { playSfx('train-whistle'); setWhistlePlayed(true) }, TIMING.TRAIN_ARRIVAL_WHISTLE),
       // One carriage follows the approach from the distant light to the platform.
-      setTimeout(() => setTrainVisible(true), TIMING.TRAIN_ARRIVAL_VISIBLE),
+      setTimeout(() => setTrainVisible(true), TIMING.TRAIN_ARRIVAL_LIGHT),
       setTimeout(() => { playSfx('train-brake'); setTrainStopped(true) }, TIMING.TRAIN_ARRIVAL_STOP),
       setTimeout(() => { playSfx('train-door'); setDoorsOpen(true) }, TIMING.TRAIN_ARRIVAL_DOOR),
       setTimeout(() => setConductorReady(true), TIMING.TRAIN_ARRIVAL_NOD),
@@ -173,58 +174,20 @@ function TrainArrivalSequence() {
         hint="Not long now"
         interactSfx="paper-rustle"
         style={{
-          position: 'absolute', bottom: '27%', left: '10%',
+          position: 'absolute', bottom: '6%', left: '8%',
           opacity: 0.55 + b * 0.2,
         }}
       >
-        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 3 }}>
-          <div style={groundShadow(90, 0.35)} />
-          <div style={{
-            width: 96, height: 13,
-            background: faceGradient(46+Math.round(w*10), 34+Math.round(w*7), 20+Math.round(w*4), 0.9, 10),
-            borderRadius: 2,
-            borderTop: `1px solid rgba(210,155,72,${0.14 + b * 0.1})`,
-          }} />
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 8px' }}>
-            {[0, 1, 2].map((i) => (
-              <div key={i} style={{
-                width: 5, height: 18, borderRadius: '0 0 2px 2px',
-                background: 'linear-gradient(180deg, rgba(46,34,20,0.9), rgba(26,18,10,0.9))',
-              }} />
-            ))}
-          </div>
-          {/* A small carving, worn into the wood by someone who waited here before */}
-          <div style={{
-            position: 'absolute', top: -1, left: 10,
-            fontFamily: 'var(--font-body,"Crimson Text",Georgia,serif)',
-            fontStyle: 'italic', fontSize: 7,
-            color: 'rgba(20,15,10,0.4)',
-            transform: 'rotate(-3deg)',
-          }}>
-            R ♡ E
-          </div>
-        </div>
+        <TimberBench width={180} />
       </WorldObject>
 
+      {/* Rails stay behind the platform lip, following the carriage's left-to-right approach. */}
       <svg aria-hidden="true" viewBox="0 0 1440 900" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
-        <path d="M980 520L-180 730 M980 524L1510 730" stroke="#7d8585" strokeOpacity="0.4" strokeWidth="2" fill="none" />
-        <path d="M980 520L-180 730 M980 524L1510 730" stroke="#edc58c" strokeOpacity={whistlePlayed ? 0.28 : 0.04} style={{ transition: 'stroke-opacity 8s ease' }} fill="none" />
+        <path d="M0 645H1440V689H0Z" fill="#141b20" />
+        {Array.from({length:28}, (_,i) => { const x=i*56, y=657; return <path key={i} d={`M${x} ${y-7}l12 24`} stroke="#514a3d" strokeWidth="6" /> })}
+        <path d="M0 650H1440 M0 674H1440" stroke="#828681" strokeWidth="2.5" fill="none" />
+        <path d="M0 689H1440V706H0Z" fill="#48443b" /><path d="M0 689H1440" stroke="#bead7c" strokeWidth="2" />
       </svg>
-
-      {/* The distant light — a pinprick that grows into a headlamp */}
-      {!trainVisible && (
-        <div style={{
-          position: 'absolute', bottom: '42%', left: '68%',
-          width: 6, height: 6,
-          borderRadius: '50%',
-          background: 'rgba(255,225,180,1)',
-          transform: 'translateX(-50%)',
-          animation: !reducedMotion
-            ? `distant-light-grow ${TIMING.TRAIN_ARRIVAL_VISIBLE - TIMING.TRAIN_ARRIVAL_LIGHT}ms ease-in ${TIMING.TRAIN_ARRIVAL_LIGHT}ms backwards ${playState}`
-            : 'none',
-          opacity: reducedMotion ? 1 : undefined,
-        }} aria-hidden="true" />
-      )}
 
       {trainVisible && (
         <ArrivalCarriage

@@ -15,7 +15,7 @@ export const BOOKMARKS: BookmarkMemory[] = [
     unlockCondition: { type: 'free' },
     notebookSection: 8,
     notebookOrder: 1,
-    quote: 'I keep reading the same paragraph. because I keep thinking about you and forgot I was reading.',
+    quote: 'I\'ve read this same paragraph four times now. I keep thinking about you instead.',
     bookContext: 'Always Thinking of You.',
   },
 ]

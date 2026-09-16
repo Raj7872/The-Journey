@@ -1,5 +1,7 @@
 'use client'
 
+import { SunflowerBouquet } from '@/components/scenery/DimensionalProps'
+
 import { useScene } from '@/engine/SceneManager/SceneContext'
 import { useTimeline } from '@/engine/TimelineDirector/TimelineContext'
 import { useNotebook } from '@/engine/NotebookManager/NotebookContext'
@@ -142,6 +144,14 @@ export function PlatformCafe() {
         </div>
       </WorldObject>
 
+      {/* Small counters ground the typewriter and radio, clear of the caf? table. */}
+      {[{left:'18%',bottom:'28%',height:72,width:100},{left:'67%',bottom:'28%',height:108,width:120}].map((cabinet,i) => (
+        <div key={i} aria-hidden="true" style={{position:'absolute',...cabinet,background:'linear-gradient(100deg,#4e3b28,#271f18)',borderTop:'5px solid #826943',boxShadow:'8px -5px 0 #3b3024, inset 0 1px 0 #c3a06a55',transform:`translateX(calc(var(--parallax-x, 0px) * ${i ? 0.55 : 0.5}))`}}>
+          <div style={{position:'absolute',inset:'12px 10px 8px',border:'1px solid #9d7f4b33',boxShadow:'inset 2px 0 3px #0004'}} />
+          <div style={{position:'absolute',top:'45%',left:'45%',width:12,height:3,background:'#9c8150'}} />
+        </div>
+      ))}
+
       {/* ── TYPEWRITER — a receipt tucked inside ── */}
       <WorldObject
         label="An old typewriter on the counter"
@@ -154,7 +164,7 @@ export function PlatformCafe() {
           if (receipt001) { collect(receipt001); reveal(receipt001) }
         }}
         style={{
-          position: 'absolute', bottom: '38%', left: '30%',
+          position: 'absolute', bottom: '36%', left: '19%',
           transform: `translateX(calc(var(--parallax-x, 0px) * 0.5))`,
           opacity: 0.75 + brightness * 0.15,
         }}
@@ -234,32 +244,34 @@ export function PlatformCafe() {
           can't drift off the surface again ── */}
       <div style={{
         position: 'absolute', bottom: '32%', left: '43%',
-        transform: `translateX(-50%) translateX(calc(var(--parallax-x, 0px) * 0.42))`,
+        transform: `translateX(-50%) translateX(calc(var(--parallax-x, 0px) * 0.42)) scale(1.65)`,
+        transformOrigin: 'bottom center',
         opacity: 0.7 + brightness * 0.2,
-      }} aria-hidden="true">
+      }}>
         <div style={{ position: 'relative' }}>
           <div style={groundShadow(150, 0.4)} />
           {/* Tabletop */}
           <div style={{
-            width: 180, height: 26,
+            width: 210, height: 46,
+            boxShadow: '0 7px 0 #382b20, 0 9px 0 #a1814a55, inset 0 2px 1px #d3ae7744',
             borderRadius: '50%',
             background: faceGradient(30+Math.round(cafeWarmth*10), 22+Math.round(cafeWarmth*6), 14+Math.round(cafeWarmth*3), 0.92, 14),
             border: `1px solid rgba(184,146,42,${0.18 + brightness * 0.12})`,
           }} />
           {/* Pedestal leg */}
           <div style={{
-            width: 6, height: 36, margin: '0 auto',
+            width: 13, height: 56, margin: '0 auto',
             background: 'linear-gradient(90deg, rgba(20,15,9,0.9), rgba(38,28,16,0.9) 50%, rgba(20,15,9,0.9))',
           }} />
           {/* Base */}
           <div style={{
-            width: 46, height: 6, margin: '0 auto',
+            width: 66, height: 9, margin: '0 auto',
             borderRadius: '50%',
             background: 'rgba(18,13,8,0.85)',
           }} />
 
           {/* ── Everything below sits on the tabletop surface, positioned
-              relative to this same table group. bottom: 55px = base 6 + leg
+              relative to this same table group. bottom: 89px = base 6 + leg
               36 + half the tabletop's own 26px height, so items rest in the
               body of the ellipse rather than hanging off its front lip. Kept
               well clear of left/right 0-10% and 90-100%, where the ellipse
@@ -268,7 +280,7 @@ export function PlatformCafe() {
 
           {/* Coffee cups — two mugs, one tipped; the upright one hides a letter */}
           <div style={{
-            position: 'absolute', bottom: 55, left: '36%',
+            position: 'absolute', bottom: 89, left: '36%',
             display: 'flex', gap: 8, alignItems: 'flex-end',
           }}>
             <WorldObject
@@ -286,7 +298,8 @@ export function PlatformCafe() {
                 width: 16, height: 20,
                 background: faceGradient(22+Math.round(cafeWarmth*5), 18+Math.round(cafeWarmth*3), 14+Math.round(cafeWarmth*2), 0.85, 12),
                 border: `1px solid rgba(184,146,42,${0.15 + brightness * 0.1})`,
-                borderRadius: '0 0 3px 3px',
+                borderRadius: '3px 3px 7px 7px',
+                boxShadow: 'inset 3px 0 3px #dfc9a744, 2px 2px 3px #0005',
                 position: 'relative',
               }}>
                 <div style={groundShadow(20, 0.35)} />
@@ -324,7 +337,7 @@ export function PlatformCafe() {
             onInteract={() => {
               if (polaroid001) { collect(polaroid001); reveal(polaroid001) }
             }}
-            style={{ position: 'absolute', bottom: 55, left: '13%' }}
+            style={{ position: 'absolute', bottom: 89, left: '13%' }}
           >
             <div style={{ position: 'relative' }}>
               <div style={groundShadow(22, 0.35)} />
@@ -337,43 +350,8 @@ export function PlatformCafe() {
             </div>
           </WorldObject>
 
-          {/* Sunflower in a small vase */}
-          <div style={{ position: 'absolute', bottom: 55, right: '13%' }} aria-hidden="true">
-            <div style={{
-              position: 'relative',
-              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0,
-            }}>
-              <div style={groundShadow(20, 0.35)} />
-              {/* Stem */}
-              <div style={{ width: 1.5, height: 22, background: `rgba(61,90,71,${0.5 + brightness * 0.2})` }} />
-              {/* Sunflower head */}
-              <div style={{ position: 'relative', width: 20, height: 20, marginTop: -6 }}>
-                {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
-                  <div key={angle} style={{
-                    position: 'absolute', top: '50%', left: '50%',
-                    width: 7, height: 11,
-                    background: `rgba(${230+Math.round(cafeWarmth*10)},${180+Math.round(cafeWarmth*20)},40,${0.75 + brightness * 0.2})`,
-                    borderRadius: '50% 50% 50% 50% / 65% 65% 35% 35%',
-                    transformOrigin: '50% 100%',
-                    transform: `translate(-50%, -100%) rotate(${angle}deg)`,
-                  }} />
-                ))}
-                <div style={{
-                  position: 'absolute', top: '50%', left: '50%',
-                  width: 9, height: 9, borderRadius: '50%',
-                  background: 'rgba(60,42,20,0.9)',
-                  transform: 'translate(-50%, -50%)',
-                }} />
-              </div>
-              {/* Vase */}
-              <div style={{
-                width: 14, height: 20,
-                background: faceGradient(22+Math.round(cafeWarmth*5), 18+Math.round(cafeWarmth*3), 14+Math.round(cafeWarmth*2), 0.8, 10),
-                border: `1px solid rgba(184,146,42,${0.12 + brightness * 0.08})`,
-                borderRadius: '0 0 4px 4px',
-                clipPath: 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)',
-              }} />
-            </div>
+          <div style={{ position: 'absolute', bottom: 94, right: '16%' }} aria-hidden="true">
+            <SunflowerBouquet width={36} single />
           </div>
         </div>
       </div>

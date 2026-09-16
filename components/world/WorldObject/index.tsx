@@ -5,6 +5,7 @@ import { type ReactNode, useState } from 'react'
 import { useInteractiveObject } from '@/hooks/useInteractiveObject'
 import { useAudio } from '@/engine/AudioManager/AudioContext'
 import { useDebug } from '@/engine/DebugManager/DebugContext'
+import { Z_INDEX } from '@/lib/constants/zIndex'
 import type { CursorState } from '@/types/cursor'
 import type { SfxKey } from '@/types/audio'
 
@@ -93,6 +94,11 @@ export function WorldObject({
         // pass through) would otherwise silently disable every object inside
         // it too, since pointer-events inherits.
         pointerEvents: 'auto',
+        // Explicit — without this, paint order falls back to plain DOM
+        // order, and a decorative prop declared later in a scene's JSX
+        // (a chair back, a table edge) would silently paint over an
+        // earlier collectible regardless of where it visually belongs.
+        zIndex: isActive ? Z_INDEX.OBJECT_HOVER : Z_INDEX.OBJECTS,
         // Collected objects still keep the custom lantern cursor (just idle,
         // no glow) rather than reverting to the OS cursor — only a truly
         // disabled object breaks the illusion.

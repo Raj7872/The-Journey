@@ -365,7 +365,7 @@ export const TrainWindow = forwardRef<TrainWindowHandle, TrainWindowProps>(funct
             d="M47 27 C 34 18, 32 8, 40 5 C 44 3, 47 7, 47 10 C 47 7, 50 3, 54 5 C 62 8, 60 18, 47 27 Z"
             fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.4" strokeLinecap="round"
           />
-          <text x="66" y="25" fontFamily="Georgia, serif" fontStyle="italic" fontWeight="700" fontSize="22" fill="rgba(255,255,255,0.82)">E</text>
+          <text x="66" y="25" fontFamily="Georgia, serif" fontStyle="italic" fontWeight="700" fontSize="22" fill="rgba(255,255,255,0.82)">R</text>
         </svg>
         <svg
           aria-hidden="true"

@@ -6,7 +6,7 @@ import type { SceneId } from '@/types/scene'
 /** Small vector scenery, with no textures, extra WebGL contexts or frame timers. */
 export function SceneDepth({ sceneId }: { sceneId: SceneId }) {
   const id = useId().replace(/:/g, '')
-  if (sceneId === 'credits') return null
+  if (['credits', 'the-field', 'the-bench', 'the-gift', 'the-silence', 'the-question', 'world-changes'].includes(sceneId)) return null
   const meadow = ['the-field', 'the-bench', 'the-gift', 'the-silence', 'the-question', 'world-changes'].includes(sceneId)
   const platform = ['outside-station', 'platform-one', 'platform-eleven', 'train-arrival'].includes(sceneId)
   const carriage = ['train-interior', 'final-carriage'].includes(sceneId)

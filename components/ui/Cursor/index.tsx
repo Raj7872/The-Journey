@@ -25,7 +25,6 @@ export function Cursor() {
 
   // Smooth follow with lerp
   useEffect(() => {
-    if (reducedMotion) return
 
     const handleMove = (e: MouseEvent) => {
       posRef.current = { x: e.clientX, y: e.clientY }
@@ -40,7 +39,7 @@ export function Cursor() {
     window.addEventListener('mousemove', handleMove, { passive: true })
 
     const tick = () => {
-      const speed = 0.12
+      const speed = reducedMotion ? 1 : 0.22
       currentRef.current.x += (posRef.current.x - currentRef.current.x) * speed
       currentRef.current.y += (posRef.current.y - currentRef.current.y) * speed
 
@@ -66,7 +65,7 @@ export function Cursor() {
 
   const coreSize = isHover ? 12 : isRead ? 4 : 9
   const glowSize = isHover ? 36 : isRead ? 12 : 28
-  const coreOpacity = isRead ? 0.3 : 1
+  const coreOpacity = isRead ? 0.8 : 1
   const glowOpacity = isCollect ? 0.35 : isHover ? 0.28 : 0.2
 
   if (!cursorState.isEnabled) return null
@@ -88,6 +87,7 @@ export function Cursor() {
         height: glowSize,
         zIndex: Z_INDEX.CURSOR,
         pointerEvents: 'none',
+        opacity: cursorState.isVisible ? 1 : 0,
         willChange: 'transform',
         // Offset so the hot-spot is the centre of the lantern
         marginLeft: -(glowSize / 2),

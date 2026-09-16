@@ -7,35 +7,34 @@
 export const PROPOSAL_CONFIG = {
   // ── The Final Letter ────────────────────────────────────────────────────
   finalLetterLines: [
-    'If someone asked me when I fell in love with you...',
-    'I don\'t think I could answer.',
-    'It wasn\'t one moment.',
-    'It wasn\'t one conversation.',
-    'It wasn\'t one smile.',
-    'It was hundreds of tiny moments.',
-    'The kind people usually forget.',
-    'But somehow...',
-    'I remembered every one.',
+    'People ask when it started, like there\'s one clear moment to point to.',
+    'Honestly, I don\'t think there was just one.',
+    'It wasn\'t a single conversation.',
+    'It wasn\'t a single day.',
+    'It was hundreds of ordinary ones, quietly stacked on top of each other.',
+    'The kind you barely notice while they\'re happening.',
+    'And somehow...',
+    'I kept every one of them anyway.',
   ] as const,
 
   finalLetterPause: [
-    'I don\'t know where life will take us.',
-    'I don\'t know how many stations we\'ll pass.',
-    'I don\'t know how many sunsets we\'ll watch.',
-    'But I know one thing.',
-    'If you\'ll let me...',
-    'I\'d love to keep choosing you. Forever ❤️',
-    'I think I\'ve kept you waiting for long enough.',
+    'I can\'t promise I know what\'s ahead.',
+    'I don\'t know how many more sunrises we\'ll watch.',
+    'Or how many more ordinary days we\'ll get.',
+    'But I know this much.',
+    'If you\'ll have me...',
+    'I want to keep choosing you, again and again. ❤️',
+    'I think it\'s about time I finally asked.',
   ] as const,
 
   // ── The Question ───────────────────────────────────────────────────────
   question: 'Will You Be My Girlfriend?',
 
-  subtext: 'I\'ll choose you always...\nat every station of our life...\nin every lifetime. \nPalagi.',
+  subtext: 'Not just today, or this year...\nbut every stop still ahead of us...\nin this life, and any other.\nEvery time.',
 
   // ── The Button ─────────────────────────────────────────────────────────
   // One button. No "No." No pressure.
-  yesLabel: '💕 Yes, Let\'s Begin Our Forever',
+  yesLabel: '💕 Yes — Let\'s Keep Going',
 
   // ── The Ticket (Gift Box) ──────────────────────────────────────────────
   giftTicket: {
@@ -43,24 +42,24 @@ export const PROPOSAL_CONFIG = {
     to: 'Our Story',
     passenger: process.env['NEXT_PUBLIC_RECIPIENT_NAME'] ?? 'You',
     companion: 'I ❤️',
-    noteOnBack: 'I\'ve been saving this seat for you.',
+    noteOnBack: 'This seat\'s been open for you the whole time.',
   },
 
   // ── Credits ────────────────────────────────────────────────────────────
   creditLines: [
-    'Created with love.',
-    'Thank you for taking this journey.',
-    'Some stories begin with one conversation.',
-    'Ours begins with one "Yes."',
+    'Made with care.',
+    'Thank you for coming this far.',
+    'Every story starts somewhere small.',
+    'This one starts with a "Yes."',
   ] as const,
 
   // ── Secret Ending ──────────────────────────────────────────────────────
-  secretEndingText: 'Reason 101',
+  secretEndingText: 'One More Reason',
   secretEndingBody:
-    'This story isn\'t finished.\nIt\'s finally ready to begin.',
+    'This isn\'t the end of the story.\nIt\'s just the first page of the next one.',
 
   // ── Return State Announcement ──────────────────────────────────────────
   // Shown when player returns after completing the journey
   returnAnnouncement:
-    'Good morning. The station remembers you. Welcome back.',
+    'Morning again. The station never really forgets a familiar face. Welcome back.',
 } as const

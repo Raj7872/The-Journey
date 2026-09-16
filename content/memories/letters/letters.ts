@@ -1,6 +1,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Letters Content
-// 6 discoverable letters, each handwritten, personal, slightly imperfect.
+// 6 discoverable letters, each handwritten, warm, slightly imperfect.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { LetterMemory } from '@/types/memory'
@@ -22,9 +22,9 @@ export const LETTERS: LetterMemory[] = [
     notebookOrder: 1,
     date: 'Three years ago',
     body: `I don't know how to start this.<br><br>
-I've been sitting here for about twenty minutes just writing your name and crossing it out because nothing sounds right when I put it next to words.<br><br>
-You laughed at something I said that Day. It's not really like a Love Letter, I'm just remembering our first ever interaction in this lifetime.<br><br>
-I didn't know then that we will have a strong connection in future.`,
+I've been sitting here for twenty minutes trying out openings and crossing every one of them out, because nothing sounds right next to what I actually mean.<br><br>
+You laughed at something small I said that day. It's not really a love letter — I'm just remembering the first time our paths crossed.<br><br>
+I didn't know then how far that one moment would end up carrying us.`,
     signature: '— R',
     crossedOutPhrases: ['Dear', 'You', 'I wanted to say'],
     inkVariation: 'medium',
@@ -45,10 +45,10 @@ I didn't know then that we will have a strong connection in future.`,
     notebookSection: 1,
     notebookOrder: 2,
     date: 'Four months ago',
-    body: `I found you, Again.<br><br>
-and this time, Maybe it was just a coincident, But I still had the memory of us talking about random things that would have barely mattered in those 3 years.<br><br>
-As well your handle name engraved in my memory.<br><br>
-I often remember those memories.`,
+    body: `I found you again.<br><br>
+Maybe it was just chance, but I still remembered the small things we used to talk about — the ones that shouldn't have mattered after all this time, and somehow did.<br><br>
+Some memories just don't fade the way they're supposed to.<br><br>
+I think about that a lot more than I let on.`,
     signature: '— R',
     inkVariation: 'light',
     paperRotation: 0.8,
@@ -68,9 +68,9 @@ I often remember those memories.`,
     notebookSection: 1,
     notebookOrder: 3,
     date: 'Three months ago',
-    body: `I started to notice you and suddenly Butterflies became a real thing in my stomach."<br><br>
-I didn't say what I was thinking or feeling, directly to you and it kind of threw you off. That really wasn't how I wanted it to be<br><br>
-<em>but, Gladly we talked things out and fixed it. I'm very glad we were wanting to try something together.</em>`,
+    body: `I started noticing you, and suddenly every nervous cliché turned out to be true.<br><br>
+I didn't say what I was actually thinking, and I think that threw you off a little. That wasn't how I meant for it to go.<br><br>
+<em>But we talked it through, and I'm glad we did — glad we decided this was worth trying.</em>`,
     signature: '— R',
     inkVariation: 'medium',
     paperRotation: 1.5,
@@ -89,16 +89,16 @@ I didn't say what I was thinking or feeling, directly to you and it kind of thre
     unlockCondition: { type: 'free' },
     notebookSection: 1,
     notebookOrder: 4,
-    date: 'About Two Months ago',
-    body: `I was already in love with you, completely.<br><br>
-I really do not have any explanation for that ,How it happened, when exactly it happened.<br><br>
-I just knew, that my life is all about you now, YOu became most important part of my life.<br><br>
-And I will never let go of you, Ever.`,
+    date: 'About two months ago',
+    body: `I was already in love with you. Completely.<br><br>
+I still can't explain exactly how it happened, or when — it just did, quietly, somewhere between all the ordinary days.<br><br>
+I only know that my life has you in it now, in a way that changes what "important" means.<br><br>
+And I'm not planning on letting go of that.`,
     signature: '— R',
     inkVariation: 'heavy',
     paperRotation: -0.5,
   },
-    {
+  {
     id: 'letter-006',
     category: 'letter',
     title: 'The Luggage Rack',
@@ -113,11 +113,11 @@ And I will never let go of you, Ever.`,
     notebookSection: 1,
     notebookOrder: 6,
     date: 'Past weeks',
-    body: `I have been making this views to ask you something.<br><br>
-but anyways question isn't here yet.<br><br>
-I Hope you enjoy the Train ride, It'll be a couple of minute long, until you reach the destination.<br><br>
-Hehe and I hope you notice our name Initials engraved on the window.<br><br>
-I couldn't make it any better to show you the cute view.`,
+    body: `I've been putting this trip together to ask you something.<br><br>
+The question isn't here yet, though — not quite.<br><br>
+I hope you're enjoying the ride. It won't be long now, just a little further to go.<br><br>
+And I hope, somewhere along the way, you notice what's written on the window.<br><br>
+It's the best view I could think to give you.`,
     signature: '— R',
     inkVariation: 'light',
     paperRotation: -0.9,
@@ -137,11 +137,11 @@ I couldn't make it any better to show you the cute view.`,
     notebookSection: 1,
     notebookOrder: 5,
     date: 'Tonight',
-    body: `I feel a bit nervous, well.<br><br>
-I have never said it out loud or directly to you at all, But I'm saying it now.<br><br>
-Mahal na Mahal Kita Baby.<br><br>
-and there is going to be far bigger thing for you ahead.<br><br>
-<em>I don't know the future yet...</em>`,
+    body: `I feel nervous, if I'm honest.<br><br>
+I've never said this out loud before — not directly, not like this. But I'm saying it now.<br><br>
+I love you. More than I've known how to say.<br><br>
+And there's something bigger waiting for you just ahead.<br><br>
+<em>I don't know exactly what the future holds...</em>`,
     signature: '— R',
     inkVariation: 'medium',
     paperRotation: 0,

@@ -1,5 +1,7 @@
 'use client'
 
+import { PaneledDoor } from '@/components/scenery/DimensionalProps'
+
 import { useScene } from '@/engine/SceneManager/SceneContext'
 import { useTimeline } from '@/engine/TimelineDirector/TimelineContext'
 import { useNotebook } from '@/engine/NotebookManager/NotebookContext'
@@ -160,7 +162,7 @@ export function EntranceHall() {
       <div
         style={{
           position: 'absolute',
-          top: '14%',
+          top: '19%',
           left: '50%',
           transform: `translateX(-50%) translateX(calc(var(--parallax-x, 0px) * 0.3))`,
         }}
@@ -251,46 +253,16 @@ export function EntranceHall() {
           position: 'absolute',
           bottom: '28%',
           left: '50%',
-          transform: `translateX(-50%) translateX(calc(var(--parallax-x, 0px) * 0.2))`,
-          width: 120,
-          height: '55%',
+          transform: `translateX(-50%) translateX(calc(var(--parallax-x, 0px) * 0.3))`,
+          width: 190,
+          height: 300,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'flex-end',
         }}
       >
-        {/* Arch perspective */}
-        <div
-          style={{
-            width: '100%',
-            height: '100%',
-            background: `radial-gradient(ellipse 80% 60% at 50% 80%, 
-              rgba(212,132,58,${0.04 + brightness * 0.06}) 0%, 
-              transparent 70%)`,
-            borderTop: `1px solid rgba(184,146,42,${0.08 + brightness * 0.1})`,
-            borderLeft: `1px solid rgba(184,146,42,${0.08 + brightness * 0.1})`,
-            borderRight: `1px solid rgba(184,146,42,${0.08 + brightness * 0.1})`,
-            borderBottom: 'none',
-            borderRadius: '60px 60px 0 0',
-            display: 'flex',
-            alignItems: 'flex-end',
-            justifyContent: 'center',
-            paddingBottom: 12,
-          }}
-        >
-          <span
-            style={{
-              fontFamily: 'var(--font-mono, "Special Elite", monospace)',
-              fontSize: 8,
-              letterSpacing: '2px',
-              color: `rgba(212,132,58,${0.3 + brightness * 0.3})`,
-              textTransform: 'uppercase',
-            }}
-          >
-            Main Hall →
-          </span>
-        </div>
+        <PaneledDoor width={190} height={300} open label="MAIN HALL" />
       </StationObject>
 
       {/* Rain footprints on floor */}

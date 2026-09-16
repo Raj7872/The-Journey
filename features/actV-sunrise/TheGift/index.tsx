@@ -1,9 +1,13 @@
 'use client'
 
+import { KeepsakeBox } from '@/components/scenery/DimensionalProps'
+
+import { MeadowLandscape } from '@/components/scenery/MeadowLandscape'
+
 import { useScene } from '@/engine/SceneManager/SceneContext'
 import { useTimeline } from '@/engine/TimelineDirector/TimelineContext'
 import { StationObject } from '@/components/station/StationObject'
-import { groundShadow, faceGradient, paperFiber, specularHighlight } from '@/lib/utils/shading'
+import { faceGradient, paperFiber } from '@/lib/utils/shading'
 import { PROPOSAL_CONFIG } from '@/content/proposal/proposal'
 
 /**
@@ -27,43 +31,19 @@ export function TheGift() {
       role="region"
       aria-label="An open gift box, a folded ticket resting inside"
     >
-      <div style={{
-        position: 'absolute', inset: 0,
-        background: `linear-gradient(180deg,
-          rgba(${Math.round(220+w*20)},${Math.round(190+w*24)},${Math.round(155+w*22)},1) 0%,
-          rgba(${Math.round(248+w*6)},${Math.round(220+w*12)},${Math.round(180+w*12)},1) 55%,
-          rgba(${Math.round(252+w*3)},${Math.round(232+w*8)},${Math.round(198+w*8)},1) 100%)`,
-        transition: 'background 2.5s ease',
-      }} aria-hidden="true" />
+      <MeadowLandscape view="close" />
 
       {/* Soft bench-wood surface beneath, just enough to ground the box */}
       <div style={{
         position: 'absolute', bottom: 0, left: '10%', right: '10%', height: '20%',
-        background: `${faceGradient(64+Math.round(w*10), 46+Math.round(w*8), 28+Math.round(w*4), 0.5, 10)}`,
+        boxShadow: 'inset 0 4px 0 #c4a06c, 0 -10px 0 #4b3b29',
+        transform: 'perspective(700px) rotateX(22deg)', transformOrigin: 'bottom center',
+        background: `repeating-linear-gradient(0deg, transparent 0 38px, #211b1677 39px 41px), ${faceGradient(64+Math.round(w*10), 46+Math.round(w*8), 28+Math.round(w*4), 0.5, 10)}`,
         borderRadius: '6px 6px 0 0',
       }} aria-hidden="true" />
 
-      {/* The open box */}
       <div style={{ position: 'absolute', bottom: '20%', left: '50%', transform: 'translateX(-50%)' }} aria-hidden="true">
-        <div style={{ position: 'relative' }}>
-          <div style={groundShadow(150, 0.32)} />
-          {/* Lid, set aside */}
-          <div style={{
-            position: 'absolute', bottom: 4, left: -74, width: 62, height: 14, transform: 'rotate(-8deg)',
-            background: `${specularHighlight('35%', '25%', '70%', 0.25)}, ${faceGradient(148+Math.round(w*18), 58+Math.round(w*10), 44+Math.round(w*6), 0.92, 10)}`,
-            borderRadius: 2,
-          }} />
-          {/* Box body */}
-          <div style={{
-            width: 150, height: 70,
-            background: `${specularHighlight('30%', '15%', '65%', 0.22)}, ${faceGradient(140+Math.round(w*18), 54+Math.round(w*10), 40+Math.round(w*6), 0.95, 12)}`,
-            borderRadius: '2px 2px 6px 6px',
-            position: 'relative', overflow: 'hidden',
-          }}>
-            {/* Interior shadow, deep inside the box */}
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '55%', background: 'linear-gradient(180deg, rgba(0,0,0,0.5), transparent)' }} />
-          </div>
-        </div>
+        <KeepsakeBox width={260} open />
       </div>
 
       {/* The folded ticket, resting inside — the only interactive thing here */}
@@ -71,7 +51,7 @@ export function TheGift() {
         label={`A folded ticket — from ${ticket.from}, to ${ticket.to}`}
         hint="Unfold it"
         onClick={() => transitionTo('the-silence')}
-        style={{ position: 'absolute', bottom: '25%', left: '50%', transform: 'translateX(-50%) rotate(-2deg)', width: 74, height: 46 }}
+        style={{ position: 'absolute', bottom: 'calc(20% + 85px)', left: '51%', transform: 'translateX(-50%) rotate(-2deg)', width: 74, height: 46 }}
       >
         <div style={{
           width: 70, height: 42,

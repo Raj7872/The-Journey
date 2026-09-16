@@ -5,6 +5,7 @@ import { type ReactNode } from 'react'
 import { useInteractiveObject } from '@/hooks/useInteractiveObject'
 import type { CursorState } from '@/types/cursor'
 import { useTimeline } from '@/engine/TimelineDirector/TimelineContext'
+import { Z_INDEX } from '@/lib/constants/zIndex'
 
 interface StationObjectProps {
   children: ReactNode
@@ -59,6 +60,10 @@ export function StationObject({
         // let clicks pass through to what's behind it) would otherwise
         // silently disable this too, since pointer-events inherits.
         pointerEvents: 'auto',
+        // Explicit — without this, paint order falls back to plain DOM
+        // order, and a decorative prop declared later in a scene's JSX
+        // would silently paint over an earlier interactive object.
+        zIndex: isActive ? Z_INDEX.OBJECT_HOVER : Z_INDEX.OBJECTS,
         // Collected objects still keep the custom lantern cursor (just idle,
         // no glow) rather than reverting to the OS cursor — only a truly
         // disabled object breaks the illusion.

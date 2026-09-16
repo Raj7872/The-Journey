@@ -24,6 +24,7 @@ export class CursorManager {
   init(enabled: boolean): void {
     this.state = { ...this.state, isEnabled: enabled }
 
+    this.notify()
     if (!enabled || typeof window === 'undefined') return
 
     // Native cursor stays visible until we actually know where the mouse is —
@@ -81,8 +82,10 @@ export class CursorManager {
   }
 
   private updatePosition(position: CursorPosition): void {
+    const becameVisible = !this.state.isVisible
     this.state = { ...this.state, position, isVisible: true }
-    this.notify()
+    // Pointer coordinates are consumed imperatively; do not rerender the app on every move.
+    if (becameVisible) this.notify()
   }
 
   private notify(): void {
